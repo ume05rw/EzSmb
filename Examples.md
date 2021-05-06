@@ -96,6 +96,8 @@ Console.WriteLine(movedFolder.FullPath);
 
 #### Scan servers & shares on LAN:
 ```csharp
+// ** Supported only IPv4 Network **
+
 //using EzSmb;
 //using System;
 
