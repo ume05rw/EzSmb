@@ -57,11 +57,11 @@ using (var stream = await file.Read())
 }
 ```
 
-and more: [Examples](./Examples.md), [Namespace](./Namespace.md)
+and more: [Examples](https://github.com/ume05rw/EzSmb/blob/master/Examples.md), [Namespace](https://github.com/ume05rw/EzSmb/blob/master/Namespace.md)
 
 
 ## Licence
-[LGPL v3 Licence](./License.txt)
+[LGPL v3 Licence](https://github.com/ume05rw/EzSmb/blob/master/License.txt)
 
 ## Author
 [Do-Be's](http://dobes.jp)

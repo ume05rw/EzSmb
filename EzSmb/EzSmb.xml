@@ -1,0 +1,343 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EzSmb</name>
+    </assembly>
+    <members>
+        <member name="M:EzSmb.Node.GetNode(System.String,EzSmb.Params.ParamSet,System.Boolean)">
+             <summary>
+             Get Node Instance.
+             </summary>
+             <param name="path"></param>
+             <param name="paramSet"></param>
+             <returns></returns>
+             <remarks>
+            
+             ** Warning **
+             SMB1 with Windows Domain (= Active Directory) is NOT Supoorted.
+            
+             </remarks>
+        </member>
+        <member name="M:EzSmb.Node.GetNode(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            Get Node Instance.
+            </summary>
+            <param name="path"></param>
+            <param name="userName"></param>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EzSmb.Node.GetServers(System.Int32)">
+             <summary>
+             Get Server's IP-Address string array on LAN.
+             </summary>
+             <returns></returns>
+             <remarks>
+             Note:
+             IPv6 Not Supported.
+            
+             Since the authentication information is unknown,
+             it cannot be returned in the server node type.
+            
+             ** Warning **
+             This implementation is a port scan to UDP port 137.
+             It sends packets to all hosts on the subnet.
+             Be aware that this may violate the security policy of the network.
+            
+             </remarks>
+        </member>
+        <member name="P:EzSmb.Node.Name">
+            <summary>
+            Node Name
+            </summary>
+        </member>
+        <member name="P:EzSmb.Node.FullPath">
+            <summary>
+            Full Path string within Server, Folder
+            </summary>
+        </member>
+        <member name="P:EzSmb.Node.Type">
+            <summary>
+            Node Type
+            </summary>
+        </member>
+        <member name="P:EzSmb.Node.Size">
+            <summary>
+            File Size
+            </summary>
+        </member>
+        <member name="P:EzSmb.Node.Created">
+            <summary>
+            Created DateTime
+            </summary>
+        </member>
+        <member name="P:EzSmb.Node.Updated">
+            <summary>
+            Last Updated DateTime
+            </summary>
+        </member>
+        <member name="P:EzSmb.Node.LastAccessed">
+            <summary>
+            Last Access DateTime
+            </summary>
+        </member>
+        <member name="P:EzSmb.Node.ParamSet">
+            <summary>
+            Connection Parameters
+            </summary>
+        </member>
+        <member name="P:EzSmb.Node.PathSet">
+            <summary>
+            Path Infomations
+            </summary>
+        </member>
+        <member name="M:EzSmb.Node.GetParent">
+            <summary>
+            Parent Node
+            </summary>
+        </member>
+        <member name="M:EzSmb.Node.GetNode(System.String)">
+            <summary>
+            Get Node by Related Path
+            </summary>
+            <param name="relatedPath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EzSmb.Node.GetList(System.String)">
+            <summary>
+            Get Child Nodes.
+            </summary>
+            <param name="relatedPath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EzSmb.Node.Read(System.String)">
+            <summary>
+            Read Stream from File.
+            </summary>
+            <param name="relatedPath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EzSmb.Node.Write(System.IO.Stream,System.String)">
+            <summary>
+            Write Stream to File.
+            </summary>
+            <param name="stream"></param>
+            <param name="relatedPath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EzSmb.Node.CreateFolder(System.String,System.String)">
+            <summary>
+            Create Folder.
+            </summary>
+            <param name="folderName"></param>
+            <param name="relatedPath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EzSmb.Node.Delete(System.String)">
+            <summary>
+            Delete Node.
+            </summary>
+            <param name="relatedPath"></param>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:EzSmb.Node.Move(System.String,System.String)" -->
+        <member name="T:EzSmb.NodeFactory">
+            <summary>
+            Get Node Instance from Path String.
+            </summary>
+        </member>
+        <member name="M:EzSmb.NodeFactory.Get(System.String,EzSmb.NodeType,EzSmb.Params.FixedParamSet)">
+            <summary>
+            Get Node from only Path.
+            </summary>
+            <param name="fullPath"></param>
+            <param name="nodeType"></param>
+            <param name="paramSet"></param>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:EzSmb.NodeFactory.Get(System.String,EzSmb.Params.FixedParamSet,SMBLibrary.FileBasicInformation,SMBLibrary.FileStandardInformation)" -->
+        <!-- Badly formed XML comment ignored for member "M:EzSmb.NodeFactory.GetChild(EzSmb.Node,SMBLibrary.FileDirectoryInformation)" -->
+        <!-- Badly formed XML comment ignored for member "M:EzSmb.NodeFactory.GetChild(EzSmb.Node,SMBLibrary.SMB1.FindFileDirectoryInfo)" -->
+        <member name="M:EzSmb.NodeFactory.GetParent(EzSmb.Node)">
+            <summary>
+            Get Parent Node from Node.
+            </summary>
+            <param name="node"></param>
+            <returns></returns>
+        </member>
+        <member name="T:EzSmb.NodeType">
+            <summary>
+            Node Type
+            </summary>
+        </member>
+        <member name="F:EzSmb.NodeType.File">
+            <summary>
+            File
+            </summary>
+        </member>
+        <member name="F:EzSmb.NodeType.Folder">
+            <summary>
+            Directory
+            </summary>
+        </member>
+        <member name="F:EzSmb.NodeType.Server">
+            <summary>
+            SMB Server
+            </summary>
+        </member>
+        <member name="T:EzSmb.Params.Enums.SmbType">
+            <summary>
+            Smb Version Type
+            </summary>
+        </member>
+        <member name="F:EzSmb.Params.Enums.SmbType.Smb1">
+            <summary>
+            SMB ver1 / CIFS
+            </summary>
+        </member>
+        <member name="F:EzSmb.Params.Enums.SmbType.Smb2">
+            <summary>
+            SMB ver2
+            </summary>
+        </member>
+        <member name="T:EzSmb.Params.FixedParamSet">
+            <summary>
+            Readonly Connection Parameters
+            </summary>
+        </member>
+        <member name="T:EzSmb.Params.ParamSet">
+            <summary>
+            Connection Parameters
+            </summary>
+        </member>
+        <member name="P:EzSmb.Params.ParamSet.UserName">
+            <summary>
+            Account Name
+            </summary>
+        </member>
+        <member name="P:EzSmb.Params.ParamSet.Password">
+            <summary>
+            Password
+            </summary>
+        </member>
+        <member name="P:EzSmb.Params.ParamSet.DomainName">
+             <summary>
+             Windows Domain Name
+             </summary>
+             <remarks>
+             Set null for using Local Account.
+            
+             Warning:
+             SMB1 with Windows Domain (= Active Directory) is NOT Supoorted.
+             </remarks>
+        </member>
+        <member name="P:EzSmb.Params.ParamSet.SmbType">
+            <summary>
+            SMB Protocol Version
+            </summary>
+            <remarks>
+            If null, SMB2 is tried first, and SMB1 is tried on failure.
+            </remarks>
+        </member>
+        <member name="M:EzSmb.Scanners.Scanner.OnRecieved(System.IAsyncResult)">
+            <summary>
+            Event handling at data reception.
+            </summary>
+            <param name="ar"></param>
+        </member>
+        <member name="T:EzSmb.Transports.Connection">
+            <summary>
+            ISMBClient manager class
+            </summary>
+        </member>
+        <member name="T:EzSmb.Transports.Shares.Bases.ShareBase">
+            <summary>
+            ISMBFileStore manager class
+            </summary>
+        </member>
+        <member name="M:EzSmb.Transports.Shares.Bases.ShareBase.GetNode(EzSmb.Paths.PathSet,EzSmb.Params.FixedParamSet)">
+            <summary>
+            Get Node that PathSet specified.
+            </summary>
+            <param name="pathSet"></param>
+            <param name="paramSet"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EzSmb.Transports.Shares.Bases.ShareBase.CreateNode(EzSmb.Transports.Shares.Handlers.Interfaces.IHandler,EzSmb.NodeType,EzSmb.Paths.PathSet,EzSmb.Params.FixedParamSet)">
+            <summary>
+            Query Infos, Create Node Instance.
+            </summary>
+            <param name="handler"></param>
+            <param name="nodeType"></param>
+            <param name="pathSet"></param>
+            <param name="paramSet"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EzSmb.Transports.Shares.Bases.ShareBase.Read(EzSmb.Node)">
+            <summary>
+            Get MemoryStream from File.
+            </summary>
+            <param name="node"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EzSmb.Transports.Shares.Bases.ShareBase.Write(EzSmb.Node,System.IO.Stream)">
+            <summary>
+            Write Stream to File.
+            </summary>
+            <param name="node"></param>
+            <param name="stream"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EzSmb.Transports.Shares.Bases.ShareBase.CreateFolder(EzSmb.Node,System.String)">
+            <summary>
+            Create Sub Folder on Folder Node.
+            </summary>
+            <param name="node"></param>
+            <param name="folderName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EzSmb.Transports.Shares.Bases.ShareBase.Delete(EzSmb.Node)">
+            <summary>
+            Delete Folder / File.
+            </summary>
+            <param name="node"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EzSmb.Transports.Shares.Bases.ShareBase.Move(EzSmb.Node,System.String)">
+            <summary>
+            Move Folder / File.
+            </summary>
+            <param name="fromNode"></param>
+            <param name="relatedNewPath"></param>
+            <returns></returns>
+        </member>
+        <member name="T:EzSmb.Transports.Shares.Handlers.Bases.HandlerBase">
+            <summary>
+            Handle object manager
+            </summary>
+            <remarks>
+            for using statement.
+            </remarks>
+        </member>
+        <member name="T:EzSmb.Transports.Shares.Handlers.Smb1Handler">
+            <summary>
+            Handle object manager for SMB1
+            </summary>
+        </member>
+        <member name="T:EzSmb.Transports.Shares.Handlers.Smb2Handler">
+            <summary>
+            Handle object manager for SMB2
+            </summary>
+        </member>
+        <member name="T:EzSmb.Transports.Shares.Smb1Share">
+            <summary>
+            ISMBFileStore manager class for SMB1
+            </summary>
+        </member>
+        <member name="T:EzSmb.Transports.Shares.Smb2Share">
+            <summary>
+            ISMBFileStore manager class for SMB2
+            </summary>
+        </member>
+    </members>
+</doc>

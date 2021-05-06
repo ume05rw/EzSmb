@@ -2,6 +2,20 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/ume05rw/EzSmb</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ume05rw/EzSmb.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseFile>License.txt</PackageLicenseFile>
+    <PackageTags>smb cifs samba nas shared smbclient</PackageTags>
+    <PackageReleaseNotes>first release.</PackageReleaseNotes>
+    <Authors>Do-Be's</Authors>
+    <Company>Do-Be's</Company>
+    <Description>SMB(Windows shared folder) Clinet Library powered by TalAloni's SmbLibrary, Xamarin &amp; .NET Core Ready.</Description>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>C:\dev\Library\EzSmb\EzSmb\EzSmb.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,6 +24,13 @@
 
   <ItemGroup>
     <PackageReference Include="SMBLibrary" Version="1.4.6.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\License.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
