@@ -91,7 +91,7 @@ namespace EzSmb
         }
 
         /// <summary>
-        /// Get Node from Path & SMB-FileInfomation
+        /// Get Node from Path and SMB-FileInfomation
         /// </summary>
         /// <param name="fullPath"></param>
         /// <param name="paramSet"></param>
@@ -144,10 +144,9 @@ namespace EzSmb
         }
 
         /// <summary>
-        /// Get Child Node from Path & Smb2-Result.
+        /// Get Child Node from Path and Smb2-Result.
         /// </summary>
-        /// <param name="parentPath"></param>
-        /// <param name="paramSet"></param>
+        /// <param name="parentNode"></param>
         /// <param name="info"></param>
         /// <returns></returns>
         public static Node GetChild(
@@ -194,10 +193,9 @@ namespace EzSmb
         }
 
         /// <summary>
-        /// Get Child Node from Path & Smb1-Result.
+        /// Get Child Node from Path and Smb1-Result.
         /// </summary>
-        /// <param name="parentPath"></param>
-        /// <param name="paramSet"></param>
+        /// <param name="parentNode"></param>
         /// <param name="info"></param>
         /// <returns></returns>
         public static Node GetChild(

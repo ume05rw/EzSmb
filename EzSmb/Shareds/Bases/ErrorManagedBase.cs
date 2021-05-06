@@ -4,19 +4,37 @@ using System.Collections.Generic;
 
 namespace EzSmb.Shareds.Bases
 {
+    /// <summary>
+    /// Abstract class with error string
+    /// </summary>
     public abstract class ErrorManagedBase : IErrorManaged, IDisposable
     {
         private List<string> _errors;
         private bool disposedValue;
 
+        /// <summary>
+        /// Error string array
+        /// </summary>
         public string[] Errors => this._errors.ToArray();
+
+        /// <summary>
+        /// Error flag
+        /// </summary>
         public bool HasError => (0 < this._errors.Count);
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public ErrorManagedBase()
         {
             this._errors = new List<string>();
         }
 
+        /// <summary>
+        /// Add error string
+        /// </summary>
+        /// <param name="methodName"></param>
+        /// <param name="message"></param>
         protected void AddError(string methodName, string message)
         {
             if (string.IsNullOrEmpty(message))
@@ -25,6 +43,12 @@ namespace EzSmb.Shareds.Bases
             this._errors.Add($"{DateTime.Now:HH:mm:ss.fff}: [{this.GetType()}.{methodName}] {message}");
         }
 
+        /// <summary>
+        /// Add error string
+        /// </summary>
+        /// <param name="methodName"></param>
+        /// <param name="message"></param>
+        /// <param name="ex"></param>
         protected void AddError(string methodName, string message, Exception ex)
         {
             if (string.IsNullOrEmpty(message) && ex == null)
@@ -33,6 +57,10 @@ namespace EzSmb.Shareds.Bases
             this.AddError(methodName, $"{message}, Exception.Message: {ex.Message}, Exception.StackTrace: {ex.StackTrace}");
         }
 
+        /// <summary>
+        /// Add error string from IErrorManaged
+        /// </summary>
+        /// <param name="errorManaged"></param>
         protected void CopyErrors(IErrorManaged errorManaged)
         {
             if (errorManaged == null || !errorManaged.HasError)
@@ -53,11 +81,18 @@ namespace EzSmb.Shareds.Bases
         //    this.Dump(methodName, $"{message}, Exception.Message: {ex.Message}, Exception.StackTrace: {ex.StackTrace}");
         //}
 
+        /// <summary>
+        /// Clear error strings
+        /// </summary>
         public void ClearErrors()
         {
             this._errors.Clear();
         }
 
+        /// <summary>
+        /// Dispose
+        /// </summary>
+        /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
         {
             if (!this.disposedValue)
@@ -72,6 +107,9 @@ namespace EzSmb.Shareds.Bases
             }
         }
 
+        /// <summary>
+        /// Dispose
+        /// </summary>
         public void Dispose()
         {
             this.Dispose(disposing: true);

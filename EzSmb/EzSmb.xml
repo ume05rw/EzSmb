@@ -4,12 +4,18 @@
         <name>EzSmb</name>
     </assembly>
     <members>
+        <member name="T:EzSmb.Node">
+            <summary>
+            File, Folder, Server node class
+            </summary>
+        </member>
         <member name="M:EzSmb.Node.GetNode(System.String,EzSmb.Params.ParamSet,System.Boolean)">
              <summary>
              Get Node Instance.
              </summary>
              <param name="path"></param>
              <param name="paramSet"></param>
+             <param name="throwException"></param>
              <returns></returns>
              <remarks>
             
@@ -25,6 +31,7 @@
             <param name="path"></param>
             <param name="userName"></param>
             <param name="password"></param>
+            <param name="throwException"></param>
             <returns></returns>
         </member>
         <member name="M:EzSmb.Node.GetServers(System.Int32)">
@@ -140,7 +147,28 @@
             <param name="relatedPath"></param>
             <returns></returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:EzSmb.Node.Move(System.String,System.String)" -->
+        <member name="M:EzSmb.Node.Move(System.String,System.String)">
+             <summary>
+             Move Node.
+             </summary>
+             <param name="relatedNewPath"></param>
+             <param name="relatedFromPath"></param>
+             <returns></returns>
+             <remarks>
+            
+             ** SMB1 Not Supperted. **
+             ** If you find a way, please let me know!! **
+             This mehtod requires same server and same shared-folder.
+             If it is different, will fail.
+            
+             </remarks>
+        </member>
+        <member name="M:EzSmb.Node.Dispose(System.Boolean)">
+            <summary>
+            Dispose
+            </summary>
+            <param name="disposing"></param>
+        </member>
         <member name="T:EzSmb.NodeFactory">
             <summary>
             Get Node Instance from Path String.
@@ -155,9 +183,32 @@
             <param name="paramSet"></param>
             <returns></returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:EzSmb.NodeFactory.Get(System.String,EzSmb.Params.FixedParamSet,SMBLibrary.FileBasicInformation,SMBLibrary.FileStandardInformation)" -->
-        <!-- Badly formed XML comment ignored for member "M:EzSmb.NodeFactory.GetChild(EzSmb.Node,SMBLibrary.FileDirectoryInformation)" -->
-        <!-- Badly formed XML comment ignored for member "M:EzSmb.NodeFactory.GetChild(EzSmb.Node,SMBLibrary.SMB1.FindFileDirectoryInfo)" -->
+        <member name="M:EzSmb.NodeFactory.Get(System.String,EzSmb.Params.FixedParamSet,SMBLibrary.FileBasicInformation,SMBLibrary.FileStandardInformation)">
+            <summary>
+            Get Node from Path and SMB-FileInfomation
+            </summary>
+            <param name="fullPath"></param>
+            <param name="paramSet"></param>
+            <param name="basicInfo"></param>
+            <param name="stdInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EzSmb.NodeFactory.GetChild(EzSmb.Node,SMBLibrary.FileDirectoryInformation)">
+            <summary>
+            Get Child Node from Path and Smb2-Result.
+            </summary>
+            <param name="parentNode"></param>
+            <param name="info"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EzSmb.NodeFactory.GetChild(EzSmb.Node,SMBLibrary.SMB1.FindFileDirectoryInfo)">
+            <summary>
+            Get Child Node from Path and Smb1-Result.
+            </summary>
+            <param name="parentNode"></param>
+            <param name="info"></param>
+            <returns></returns>
+        </member>
         <member name="M:EzSmb.NodeFactory.GetParent(EzSmb.Node)">
             <summary>
             Get Parent Node from Node.
@@ -205,6 +256,26 @@
             Readonly Connection Parameters
             </summary>
         </member>
+        <member name="P:EzSmb.Params.FixedParamSet.UserName">
+            <summary>
+            User name
+            </summary>
+        </member>
+        <member name="P:EzSmb.Params.FixedParamSet.Password">
+            <summary>
+            Password
+            </summary>
+        </member>
+        <member name="P:EzSmb.Params.FixedParamSet.DomainName">
+            <summary>
+            Windows-Domain name
+            </summary>
+        </member>
+        <member name="P:EzSmb.Params.FixedParamSet.SmbType">
+            <summary>
+            Smb2 or Smb1
+            </summary>
+        </member>
         <member name="T:EzSmb.Params.ParamSet">
             <summary>
             Connection Parameters
@@ -239,11 +310,123 @@
             If null, SMB2 is tried first, and SMB1 is tried on failure.
             </remarks>
         </member>
+        <member name="T:EzSmb.Paths.PathSet">
+            <summary>
+            Path strings and IPAddress
+            </summary>
+        </member>
+        <member name="P:EzSmb.Paths.PathSet.IpAddressString">
+            <summary>
+            IP-Address string
+            </summary>
+        </member>
+        <member name="P:EzSmb.Paths.PathSet.IpAddress">
+            <summary>
+            IP-Address object
+            </summary>
+        </member>
+        <member name="P:EzSmb.Paths.PathSet.Share">
+            <summary>
+            Share Name
+            </summary>
+        </member>
+        <member name="P:EzSmb.Paths.PathSet.Elements">
+            <summary>
+            Sub-Path elements on Share
+            </summary>
+        </member>
+        <member name="P:EzSmb.Paths.PathSet.ElementsPath">
+            <summary>
+            Sub-Path string on Share
+            </summary>
+        </member>
+        <member name="P:EzSmb.Paths.PathSet.FullPath">
+            <summary>
+            FullPath
+            </summary>
+        </member>
         <member name="M:EzSmb.Scanners.Scanner.OnRecieved(System.IAsyncResult)">
             <summary>
             Event handling at data reception.
             </summary>
             <param name="ar"></param>
+        </member>
+        <member name="T:EzSmb.Shareds.Bases.ErrorManagedBase">
+            <summary>
+            Abstract class with error string
+            </summary>
+        </member>
+        <member name="P:EzSmb.Shareds.Bases.ErrorManagedBase.Errors">
+            <summary>
+            Error string array
+            </summary>
+        </member>
+        <member name="P:EzSmb.Shareds.Bases.ErrorManagedBase.HasError">
+            <summary>
+            Error flag
+            </summary>
+        </member>
+        <member name="M:EzSmb.Shareds.Bases.ErrorManagedBase.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:EzSmb.Shareds.Bases.ErrorManagedBase.AddError(System.String,System.String)">
+            <summary>
+            Add error string
+            </summary>
+            <param name="methodName"></param>
+            <param name="message"></param>
+        </member>
+        <member name="M:EzSmb.Shareds.Bases.ErrorManagedBase.AddError(System.String,System.String,System.Exception)">
+            <summary>
+            Add error string
+            </summary>
+            <param name="methodName"></param>
+            <param name="message"></param>
+            <param name="ex"></param>
+        </member>
+        <member name="M:EzSmb.Shareds.Bases.ErrorManagedBase.CopyErrors(EzSmb.Shareds.Interfaces.IErrorManaged)">
+            <summary>
+            Add error string from IErrorManaged
+            </summary>
+            <param name="errorManaged"></param>
+        </member>
+        <member name="M:EzSmb.Shareds.Bases.ErrorManagedBase.ClearErrors">
+            <summary>
+            Clear error strings
+            </summary>
+        </member>
+        <member name="M:EzSmb.Shareds.Bases.ErrorManagedBase.Dispose(System.Boolean)">
+            <summary>
+            Dispose
+            </summary>
+            <param name="disposing"></param>
+        </member>
+        <member name="M:EzSmb.Shareds.Bases.ErrorManagedBase.Dispose">
+            <summary>
+            Dispose
+            </summary>
+        </member>
+        <member name="T:EzSmb.Shareds.Interfaces.IErrorManaged">
+            <summary>
+            Interface with error string
+            </summary>
+        </member>
+        <member name="P:EzSmb.Shareds.Interfaces.IErrorManaged.Errors">
+            <summary>
+            Error string array
+            </summary>
+        </member>
+        <member name="P:EzSmb.Shareds.Interfaces.IErrorManaged.HasError">
+            <summary>
+            Error flag
+            </summary>
+        </member>
+        <member name="M:EzSmb.Shareds.Interfaces.IErrorManaged.ClearErrors">
+            <summary>
+            Clear error strings
+            </summary>
         </member>
         <member name="T:EzSmb.Transports.Connection">
             <summary>
@@ -318,6 +501,26 @@
             <remarks>
             for using statement.
             </remarks>
+        </member>
+        <member name="T:EzSmb.Transports.Shares.Handlers.Interfaces.IHandler">
+            <summary>
+            Handle manager interface
+            </summary>
+        </member>
+        <member name="P:EzSmb.Transports.Shares.Handlers.Interfaces.IHandler.Handle">
+            <summary>
+            Handle object
+            </summary>
+        </member>
+        <member name="P:EzSmb.Transports.Shares.Handlers.Interfaces.IHandler.FileStatus">
+            <summary>
+            FileStatus result
+            </summary>
+        </member>
+        <member name="P:EzSmb.Transports.Shares.Handlers.Interfaces.IHandler.Succeeded">
+            <summary>
+            Handle created flag
+            </summary>
         </member>
         <member name="T:EzSmb.Transports.Shares.Handlers.Smb1Handler">
             <summary>

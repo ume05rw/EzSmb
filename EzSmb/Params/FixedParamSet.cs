@@ -25,9 +25,24 @@ namespace EzSmb.Params
             };
         }
 
+        /// <summary>
+        /// User name
+        /// </summary>
         public string UserName { get; private set; }
+
+        /// <summary>
+        /// Password
+        /// </summary>
         internal string Password { get; private set; }
+
+        /// <summary>
+        /// Windows-Domain name
+        /// </summary>
         public string DomainName { get; private set; }
+
+        /// <summary>
+        /// Smb2 or Smb1
+        /// </summary>
         public SmbType SmbType { get; private set; }
 
         private FixedParamSet()

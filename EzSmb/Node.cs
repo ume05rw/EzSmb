@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 
 namespace EzSmb
 {
+    /// <summary>
+    /// File, Folder, Server node class
+    /// </summary>
     public class Node : ErrorManagedBase
     {
         #region "static"
@@ -22,6 +25,7 @@ namespace EzSmb
         /// </summary>
         /// <param name="path"></param>
         /// <param name="paramSet"></param>
+        /// <param name="throwException"></param>
         /// <returns></returns>
         /// <remarks>
         ///
@@ -91,6 +95,7 @@ namespace EzSmb
         /// <param name="path"></param>
         /// <param name="userName"></param>
         /// <param name="password"></param>
+        /// <param name="throwException"></param>
         /// <returns></returns>
         public static Task<Node> GetNode(
             string path,
@@ -231,10 +236,26 @@ namespace EzSmb
         /// </summary>
         /// <param name="relatedPath"></param>
         /// <returns></returns>
-        public async Task<Node> GetNode(string relatedPath)
+        public Task<Node> GetNode(string relatedPath)
+            => this.GetNode(relatedPath, false);
+
+        private async Task<Node> GetNode(string relatedPath, bool suppressErrors)
         {
-            var fullPath = Utils.Combine(this.FullPath, relatedPath);
-            var pathSet = PathSet.Parse(fullPath);
+            string fullPath;
+            PathSet pathSet;
+
+            try
+            {
+                fullPath = Utils.Combine(this.FullPath, relatedPath);
+                pathSet = PathSet.Parse(fullPath);
+            }
+            catch (Exception ex)
+            {
+                if (!suppressErrors)
+                    this.AddError("GetNode", ex.Message);
+
+                return null;
+            }
 
             return await Task.Run(() =>
             {
@@ -242,7 +263,8 @@ namespace EzSmb
                 {
                     if (conn.HasError)
                     {
-                        this.CopyErrors(conn);
+                        if (!suppressErrors)
+                            this.CopyErrors(conn);
 
                         return null;
                     }
@@ -250,7 +272,8 @@ namespace EzSmb
                     var result = conn.GetNode();
                     if (result == null)
                     {
-                        this.CopyErrors(conn);
+                        if (!suppressErrors)
+                            this.CopyErrors(conn);
 
                         return null;
                     }
@@ -402,13 +425,12 @@ namespace EzSmb
         /// <returns></returns>
         public async Task<bool> Write(Stream stream, string relatedPath = null)
         {
-            var node = await this.ResolveNode(relatedPath);
+            var node = await this.ResolveNode(relatedPath, true);
             if (node == null)
             {
                 // orderd new file?
                 try
                 {
-                    this.ClearErrors();
                     var fullPath = Utils.Combine(this.FullPath, relatedPath);
                     node = NodeFactory.Get(fullPath, NodeType.File, this.ParamSet);
                 }
@@ -594,11 +616,12 @@ namespace EzSmb
         /// <param name="relatedFromPath"></param>
         /// <returns></returns>
         /// <remarks>
+        ///
         /// ** SMB1 Not Supperted. **
         /// ** If you find a way, please let me know!! **
-        ///
-        /// This mehtod requires same server & same shared-folder.
+        /// This mehtod requires same server and same shared-folder.
         /// If it is different, will fail.
+        ///
         /// </remarks>
         public async Task<Node> Move(string relatedNewPath, string relatedFromPath = null)
         {
@@ -645,7 +668,7 @@ namespace EzSmb
             }).ConfigureAwait(false);
         }
 
-        private async Task<Node> ResolveNode(string relatedPath)
+        private async Task<Node> ResolveNode(string relatedPath, bool suppressErrors = false)
         {
             if (
                 string.IsNullOrEmpty(relatedPath)
@@ -658,10 +681,14 @@ namespace EzSmb
             else
             {
                 // Requested another one.
-                return await this.GetNode(relatedPath);
+                return await this.GetNode(relatedPath, suppressErrors);
             }
         }
 
+        /// <summary>
+        /// Dispose
+        /// </summary>
+        /// <param name="disposing"></param>
         protected override void Dispose(bool disposing)
         {
             if (!this.disposedValue)

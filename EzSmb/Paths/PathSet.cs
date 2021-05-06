@@ -5,6 +5,9 @@ using System.Net;
 
 namespace EzSmb.Paths
 {
+    /// <summary>
+    /// Path strings and IPAddress
+    /// </summary>
     public class PathSet
     {
         internal static PathSet Parse(string fullPath)
@@ -50,11 +53,34 @@ namespace EzSmb.Paths
             return result;
         }
 
+        /// <summary>
+        /// IP-Address string
+        /// </summary>
         public string IpAddressString { get; private set; }
+
+        /// <summary>
+        /// IP-Address object
+        /// </summary>
         public IPAddress IpAddress { get; private set; }
+
+        /// <summary>
+        /// Share Name
+        /// </summary>
         public string Share { get; private set; } = null;
+
+        /// <summary>
+        /// Sub-Path elements on Share
+        /// </summary>
         public string[] Elements { get; private set; } = Array.Empty<string>();
+
+        /// <summary>
+        /// Sub-Path string on Share
+        /// </summary>
         public string ElementsPath { get; private set; } = null;
+
+        /// <summary>
+        /// FullPath
+        /// </summary>
         public string FullPath { get; private set; }
 
         private PathSet()
