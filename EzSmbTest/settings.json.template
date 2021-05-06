@@ -1,0 +1,72 @@
+[
+    {
+        "mame": "SampleWithoutAuth",
+        "address": "192.168.0.1",
+        "userName": "",
+        "password": "",
+        "domainName": "",
+        "supportedSmb1": true,
+        "supportedSmb2": true,
+        "testPath": {
+            "share": "ShareEveryone",
+            "folder": "ShareEveryone/SubFolder",
+            "file": "ShareEveryone/SubFolder/test.txt",
+
+            "failShare": "NoSuchShare",
+            "failFolder": "ShareEveryone/NoSuchFolder",
+            "failFile": "ShareEveryone/SubFolder/NoSuchFile.txt",
+
+            "relatedServer": {
+                "path": "ShareEveryone/SubFolder/../../",
+                "name": "192.168.0.1"
+            },
+            "relatedShare": {
+                "path": "ShareEveryone/SubFolder/../",
+                "name": "ShareEveryone"
+            },
+            "relatedFolder": {
+                "path": "ShareEveryone/SubFolder/test.txt/..",
+                "name": "SubFolder"
+            },
+            "relatedFile": {
+                "path": "ShareEveryone/SubFolder/test.txt/../test.txt",
+                "name": "test.txt"
+            }
+        }
+    },
+    {
+        "mame": "SampleWithAuth",
+        "address": "192.168.0.1",
+        "userName": "userName",
+        "password": "password",
+        "domainName": "domainname.local",
+        "supportedSmb1": true,
+        "supportedSmb2": true,
+        "testPath": {
+            "share": "ShareLimited",
+            "folder": "ShareLimited/SubFolder",
+            "file": "ShareLimited/SubFolder/test.txt",
+
+            "failShare": "NoSuchShare",
+            "failFolder": "ShareLimited/NoSuchFolder",
+            "failFile": "ShareLimited/SubFolder/NoSuchFile.txt",
+
+            "relatedServer": {
+                "path": "ShareLimited/SubFolder/../../",
+                "name": "192.168.0.1"
+            },
+            "relatedShare": {
+                "path": "ShareLimited/SubFolder/../",
+                "name": "ShareLimited"
+            },
+            "relatedFolder": {
+                "path": "ShareLimited/SubFolder/test.txt/..",
+                "name": "SubFolder"
+            },
+            "relatedFile": {
+                "path": "ShareLimited/SubFolder/test.txt/../test.txt",
+                "name": "test.txt"
+            }
+        }
+    }
+]

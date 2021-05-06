@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Smb.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SMBLibrary" Version="1.4.6.1" />
+  </ItemGroup>
+
+</Project>
