@@ -68,6 +68,6 @@ and more: [Examples](https://github.com/ume05rw/EzSmb/blob/master/Examples.md), 
 
 ## Links
 
-GitHub - TalAloni/SMBLibrary: SMB client & server implements.
+GitHub - TalAloni/SMBLibrary: SMB client & server implements.  
 [https://github.com/TalAloni/SMBLibrary](https://github.com/TalAloni/SMBLibrary)
 
