@@ -8,13 +8,13 @@
     <RepositoryType>git</RepositoryType>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <PackageTags>smb cifs samba nas shared smbclient</PackageTags>
-    <PackageReleaseNotes>first release.</PackageReleaseNotes>
+    <PackageReleaseNotes>Fix static Node.GetServers method to work with Xamarin.</PackageReleaseNotes>
     <Authors>Do-Be's</Authors>
     <Company>Do-Be's</Company>
     <Description>SMB(Windows shared folder) Clinet Library powered by TalAloni's SmbLibrary, Xamarin &amp; .NET Core Ready.</Description>
-    <AssemblyVersion>1.0.1.0</AssemblyVersion>
-    <FileVersion>1.0.1.0</FileVersion>
-    <Version>1.0.1</Version>
+    <AssemblyVersion>1.0.2.0</AssemblyVersion>
+    <FileVersion>1.0.2.0</FileVersion>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

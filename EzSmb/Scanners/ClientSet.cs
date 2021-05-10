@@ -4,18 +4,17 @@ using System.Net.Sockets;
 
 namespace EzSmb.Scanners
 {
-    internal class SocketSet : IDisposable
+    internal class ClientSet : IDisposable
     {
         private const int BufferSize = 2048;
 
-        public Socket Socket;
+        public UdpClient Client;
         public byte[] ReceiveBuffer;
-        public IPAddress RemoteAddress;
 
-        public SocketSet(Socket soc, IPAddress remoteAddr)
+        public ClientSet(IPAddress localAddress)
         {
-            this.Socket = soc;
-            this.RemoteAddress = remoteAddr;
+            var localEp = new IPEndPoint(localAddress, 0);
+            this.Client = new UdpClient(localEp);
             this.ReceiveBuffer = new byte[BufferSize];
         }
 
@@ -28,11 +27,11 @@ namespace EzSmb.Scanners
             {
                 if (disposing)
                 {
-                    if (this.Socket != null)
+                    if (this.Client != null)
                     {
                         try
                         {
-                            this.Socket?.Close();
+                            this.Client?.Close();
                         }
                         catch (Exception)
                         {
@@ -40,14 +39,14 @@ namespace EzSmb.Scanners
 
                         try
                         {
-                            this.Socket?.Dispose();
+                            this.Client?.Dispose();
                         }
                         catch (Exception)
                         {
                         }
                     }
 
-                    this.RemoteAddress = null;
+                    this.Client = null;
                     this.ReceiveBuffer = null;
                 }
 

@@ -24,7 +24,7 @@ namespace EzSmb.Scanners
             0x00, 0x00, 0x21, 0x00, 0x01,
         };
 
-        private List<Socket> _sockets;
+        private List<ClientSet> _clients;
         private Dictionary<IPAddress, IPAddress[]> _querySet;
         private List<IPAddress> _resultAddresses;
 
@@ -32,7 +32,7 @@ namespace EzSmb.Scanners
 
         public Scanner()
         {
-            this._sockets = new List<Socket>();
+            this._clients = new List<ClientSet>();
             this._querySet = new Dictionary<IPAddress, IPAddress[]>();
             this._resultAddresses = new List<IPAddress>();
 
@@ -116,36 +116,17 @@ namespace EzSmb.Scanners
         {
             foreach (var pair in this._querySet)
             {
-                var localEp = new IPEndPoint(pair.Key, 0);
+                var cset = new ClientSet(pair.Key);
+
+                cset.Client.BeginReceive(this.OnRecieved, cset);
 
                 foreach (var toAddr in pair.Value)
                 {
-                    var socket = new Socket(SocketType.Dgram, ProtocolType.Udp);
-                    socket.Bind(localEp);
-
-                    var sset = new SocketSet(socket, toAddr);
-                    var endPoint = new IPEndPoint(IPAddress.Any, 0) as EndPoint;
-
-                    socket.BeginReceiveMessageFrom(
-                        sset.ReceiveBuffer,
-                        0,
-                        sset.ReceiveBuffer.Length,
-                        SocketFlags.None,
-                        ref endPoint,
-                        this.OnRecieved,
-                        sset
-                    );
-
                     var destEp = new IPEndPoint(toAddr, 137);
-                    socket.SetSocketOption(
-                        SocketOptionLevel.Socket,
-                        SocketOptionName.Broadcast,
-                        false
-                    );
-                    socket.SendTo(Scanner.NameQueryBytes, destEp);
-
-                    this._sockets.Add(socket);
+                    cset.Client.Send(Scanner.NameQueryBytes, Scanner.NameQueryBytes.Length, destEp);
                 }
+
+                this._clients.Add(cset);
             }
 
             var wait = (0 < waitMsec)
@@ -167,32 +148,20 @@ namespace EzSmb.Scanners
             if (this.disposedValue)
                 return;
 
-            // Get SocketSet-object.
-            var sset = (SocketSet)ar.AsyncState;
-            var sFlags = SocketFlags.None;
-            var endPoint = (EndPoint)new IPEndPoint(IPAddress.Any, 0);
+            // Get UdpClient.
+            var sset = (ClientSet)ar.AsyncState;
+            var endPoint = default(IPEndPoint);
 
-            int length;
             try
             {
-                length = sset.Socket.EndReceiveMessageFrom(
-                    ar,
-                    ref sFlags,
-                    ref endPoint,
-                    out IPPacketInformation pInfo
-                );
-
-                if (0 < length)
-                    this._resultAddresses.Add(sset.RemoteAddress);
+                var bytes = sset.Client.Receive(ref endPoint);
+                if (bytes != null && 0 < bytes.Length)
+                    this._resultAddresses.Add(endPoint.Address);
             }
             catch (Exception)
             {
                 // Recieve-Socket closed or disposed.
                 return;
-            }
-            finally
-            {
-                sset?.Dispose();
             }
         }
 
@@ -202,21 +171,13 @@ namespace EzSmb.Scanners
             {
                 if (disposing)
                 {
-                    if (this._sockets != null)
+                    if (this._clients != null)
                     {
-                        foreach (var socket in this._sockets)
+                        foreach (var client in this._clients)
                         {
                             try
                             {
-                                socket?.Close();
-                            }
-                            catch (Exception)
-                            {
-                            }
-
-                            try
-                            {
-                                socket?.Dispose();
+                                client?.Dispose();
                             }
                             catch (Exception)
                             {
@@ -224,10 +185,11 @@ namespace EzSmb.Scanners
                         }
                     }
 
+                    this._clients?.Clear();
                     this._querySet?.Clear();
                     this._resultAddresses?.Clear();
 
-                    this._sockets = null;
+                    this._clients = null;
                     this._querySet = null;
                     this._resultAddresses = null;
                 }
