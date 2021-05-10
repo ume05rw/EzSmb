@@ -123,7 +123,11 @@ namespace EzSmb.Scanners
                 foreach (var toAddr in pair.Value)
                 {
                     var destEp = new IPEndPoint(toAddr, 137);
-                    cset.Client.Send(Scanner.NameQueryBytes, Scanner.NameQueryBytes.Length, destEp);
+                    cset.Client.Send(
+                        Scanner.NameQueryBytes,
+                        Scanner.NameQueryBytes.Length,
+                        destEp
+                    );
                 }
 
                 this._clients.Add(cset);
@@ -149,19 +153,32 @@ namespace EzSmb.Scanners
                 return;
 
             // Get UdpClient.
-            var sset = (ClientSet)ar.AsyncState;
+            var cset = (ClientSet)ar.AsyncState;
             var endPoint = default(IPEndPoint);
 
             try
             {
-                var bytes = sset.Client.Receive(ref endPoint);
+                var bytes = cset.Client.EndReceive(ar, ref endPoint);
                 if (bytes != null && 0 < bytes.Length)
                     this._resultAddresses.Add(endPoint.Address);
             }
-            catch (Exception)
+            catch (SocketException)
             {
                 // Recieve-Socket closed or disposed.
                 return;
+            }
+            catch (ObjectDisposedException)
+            {
+                // Recieve-Socket closed or disposed.
+                return;
+            }
+
+            try
+            {
+                cset.Client.BeginReceive(this.OnRecieved, cset);
+            }
+            catch (Exception)
+            {
             }
         }
 
