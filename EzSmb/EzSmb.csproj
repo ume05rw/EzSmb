@@ -8,13 +8,13 @@
     <RepositoryType>git</RepositoryType>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <PackageTags>smb cifs samba nas shared smbclient</PackageTags>
-    <PackageReleaseNotes>Fix static Node.GetServers method, only giving one response.</PackageReleaseNotes>
+    <PackageReleaseNotes>Mod static Node.GetServers method, limit target to private addresses, and skip subnets with address ranges greater than 1024.</PackageReleaseNotes>
     <Authors>Do-Be's</Authors>
     <Company>Do-Be's</Company>
     <Description>SMB(Windows shared folder) Clinet Library powered by TalAloni's SmbLibrary, Xamarin &amp; .NET Core Ready.</Description>
-    <AssemblyVersion>1.0.3.0</AssemblyVersion>
-    <FileVersion>1.0.3.0</FileVersion>
-    <Version>1.0.3</Version>
+    <AssemblyVersion>1.0.4.0</AssemblyVersion>
+    <FileVersion>1.0.4.0</FileVersion>
+    <Version>1.0.4</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

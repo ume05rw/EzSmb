@@ -67,6 +67,24 @@ namespace EzSmb.Scanners
                         continue;
                     }
 
+                    var addrStr = uAddr.Address.ToString();
+                    if (
+                        !addrStr.StartsWith("10.")
+                        && !addrStr.StartsWith("192.168.")
+                    )
+                    {
+                        var found = false;
+                        for (var i = 16; i <= 31; i++)
+                        {
+                            if (addrStr.StartsWith($"172.{i}."))
+                                found = true;
+                        }
+
+                        if (!found)
+                            // Not private address.
+                            continue;
+                    }
+
                     var addrBytes = uAddr.Address.GetAddressBytes();
                     var maskBytes = uAddr.IPv4Mask.GetAddressBytes();
                     var addrBits = new BitArray(addrBytes);
@@ -98,6 +116,11 @@ namespace EzSmb.Scanners
 
                     var beginUint = BitConverter.ToUInt32(beginBytes, 0);
                     var endUint = BitConverter.ToUInt32(endBytes, 0);
+
+                    if (1024 < (endUint - beginUint + 1))
+                        // Too wide address range.
+                        continue;
+
                     var addresses = new List<IPAddress>();
 
                     for (var i = beginUint + 1; i < endUint; i++)
