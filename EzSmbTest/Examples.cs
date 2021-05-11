@@ -88,6 +88,26 @@ namespace EzSmbTest
             // -> 192.168.0.1\ShareName\RenamedSubFolderName
         }
 
+        public static async Task Delete()
+        {
+            // Get Node of file.
+            var file = await Node.GetNode(@"192.168.0.1\ShareName\FileName.txt", "userName", "password");
+
+            // Delete file.
+            await file.Delete();
+
+
+            // Get Node of folder.
+            var folder = await Node.GetNode(@"192.168.0.1\ShareName\FolderName\SubFolderName", "userName", "password");
+
+            // Delete file on folder.
+            await folder.Delete("child.txt");
+
+            // Delete folder.
+            // ** If the folder still has subfolders or files, cannot delete it. **
+            await folder.Delete();
+        }
+
         public static async Task ScanServers()
         {
             // Get IP-Address String Array.
@@ -119,7 +139,7 @@ namespace EzSmbTest
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0059:値の不必要な代入", Justification = "<保留中>")]
-        public static async Task ConnectAndAuth()
+        public static async Task Authentication()
         {
             // Normally.
             var server1 = await Node.GetNode("192.168.0.1", "userName", "password");
@@ -142,6 +162,30 @@ namespace EzSmbTest
                 Password = "password",
                 DomainName = "domainname.local"
             });
+        }
+
+        public static async Task GetErrors()
+        {
+            try
+            {
+                // Set true the [throwException] arg, to throw a exception.
+                var server1 = await Node.GetNode("192.168.0.1", "noSuchUser", "noSuchPassword", true);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+            }
+
+
+            var file = await Node.GetNode(@"192.168.0.1\ShareName\FileName.txt", "userName", "password");
+            await file.GetList();
+            Console.WriteLine($"file has error? : {file.HasError}");
+            // -> file has error? : true
+
+            foreach (var err in file.Errors)
+                Console.WriteLine(err);
+            // -> [timestamp]: [namespace.class.method] error message.
         }
     }
 }

@@ -1,5 +1,5 @@
 # Examples
-
+* * *
 #### Get items in shared folder:
 ```csharp
 //using EzSmb;
@@ -15,7 +15,7 @@ foreach (var node in nodes)
     Console.WriteLine($"Name: {node.Name}, Type: {node.Type}, LastAccessed: {node.LastAccessed:yyyy-MM-dd HH:mm:ss}");
 }
 ```
-
+* * *
 #### Read file:
 ```csharp
 //using EzSmb;
@@ -32,8 +32,8 @@ using (var stream = await file.Read())
     Console.WriteLine(text);
 }
 ```
-
-#### Create folder/file:
+* * *
+#### Create new folder/file:
 ```csharp
 //using EzSmb;
 //using System.IO;
@@ -43,14 +43,14 @@ using (var stream = await file.Read())
 // Get Node of base folder.
 var folder = await Node.GetNode(@"192.168.0.1\ShareName\FolderName", "userName", "password");
 
-// Create Folder.
+// Create new folder.
 var newFolder = await folder.CreateFolder("NewFolder");
 
 Console.WriteLine(newFolder.FullPath);
 // -> 192.168.0.1\ShareName\FolderName\NewFolder
 
 
-// Create Stream for new file.
+// Create stream for new file.
 var text = Encoding.UTF8.GetBytes("Hello!");
 using (var stream = new MemoryStream(text))
 {
@@ -63,7 +63,7 @@ using (var stream = new MemoryStream(text))
     stream.ToArray().SequenceEqual(writedStream.ToArray());
 }
 ```
-
+* * *
 #### Move folder/file:
 
 ```csharp
@@ -72,11 +72,11 @@ using (var stream = new MemoryStream(text))
 //using EzSmb;
 //using System;
 
-// 
 // Get Node of file.
 var file = await Node.GetNode(@"192.168.0.1\ShareName\FileName.txt", "userName", "password");
 
-// Move to Child folder path.
+// Move to child folder path.
+// ** Even if you don't change the file/folder name, write the name. **
 var movedFile = await file.Move(@"FolderName\RenamedFileName.txt");
 
 Console.WriteLine(movedFile.FullPath);
@@ -92,11 +92,35 @@ var movedFolder = await folder.Move(@"..\RenamedSubFolderName");
 Console.WriteLine(movedFolder.FullPath);
 // -> 192.168.0.1\ShareName\RenamedSubFolderName
 ```
+* * *
+#### Delete folder/file:
+
+```csharp
+//using EzSmb;
+//using System;
+
+// Get Node of file.
+var file = await Node.GetNode(@"192.168.0.1\ShareName\FileName.txt", "userName", "password");
+
+// Delete file.
+await file.Delete();
 
 
+// Get Node of folder.
+var folder = await Node.GetNode(@"192.168.0.1\ShareName\FolderName\SubFolderName", "userName", "password");
+
+// Delete file on folder.
+await folder.Delete("child.txt");
+
+// Delete folder.
+// ** If the folder still has subfolders or files, cannot delete it. **
+await folder.Delete();
+```
+* * *
 #### Scan servers & shares on LAN:
 ```csharp
-// ** Supported only IPv4 Network **
+// ** Supported only IPv4 Private Address Network. **
+// ** And, if the subnet range exceeds 1024, scan will skip that network interface. **
 
 //using EzSmb;
 //using System;
@@ -128,7 +152,7 @@ foreach (var ipString in ipStrings)
     }
 }
 ```
-
+* * *
 #### Authentication:
 
 ```csharp
@@ -157,4 +181,34 @@ var server4 = await Node.GetNode("192.168.0.1", new ParamSet()
     Password = "password",
     DomainName = "domainname.local"
 });
+```
+* * *
+#### Get Errors:
+
+```csharp
+//using EzSmb;
+//using System;
+
+try
+{
+    // Set true the [throwException] arg, to throw a exception.
+    var server1 = await Node.GetNode("192.168.0.1", "noSuchUser", "noSuchPassword", true);
+}
+catch (Exception ex)
+{
+    Console.WriteLine(ex.Message);
+    Console.WriteLine(ex.StackTrace);
+}
+
+
+var file = await Node.GetNode(@"192.168.0.1\ShareName\FileName.txt", "userName", "password");
+var nodes = await file.GetList();
+// nodes is null.
+
+Console.WriteLine($"file has error? : {file.HasError}");
+// -> file has error? : true
+
+foreach (var err in file.Errors)
+    Console.WriteLine(err);
+// -> [timestamp]: [namespace.class.method] error message.
 ```

@@ -153,7 +153,7 @@ namespace EzSmb
         }
 
         private static string GetErrorMessage(string methodName, string message)
-            => $"{DateTime.Now:HH:mm:ss.fff}: [SmbClient.Node.{methodName}] {message}";
+            => $"{DateTime.Now:HH:mm:ss.fff}: [EzSmb.Node.{methodName}] {message}";
         private static string GetErrorMessage(IErrorManaged errorManaged)
             => (errorManaged == null || !errorManaged.HasError)
                 ? string.Empty
