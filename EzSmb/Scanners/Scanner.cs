@@ -172,7 +172,7 @@ namespace EzSmb.Scanners
         /// <param name="ar"></param>
         private void OnRecieved(IAsyncResult ar)
         {
-            if (this.disposedValue)
+            if (this.disposedValue || ar == null || ar.AsyncState == null)
                 return;
 
             // Get UdpClient.
@@ -185,12 +185,7 @@ namespace EzSmb.Scanners
                 if (bytes != null && 0 < bytes.Length)
                     this._resultAddresses.Add(endPoint.Address);
             }
-            catch (SocketException)
-            {
-                // Recieve-Socket closed or disposed.
-                return;
-            }
-            catch (ObjectDisposedException)
+            catch (Exception)
             {
                 // Recieve-Socket closed or disposed.
                 return;
