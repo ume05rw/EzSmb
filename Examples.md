@@ -189,18 +189,6 @@ var server4 = await Node.GetNode("192.168.0.1", new ParamSet()
 //using EzSmb;
 //using System;
 
-try
-{
-    // Set true the [throwException] arg, to throw a exception.
-    var server1 = await Node.GetNode("192.168.0.1", "noSuchUser", "noSuchPassword", true);
-}
-catch (Exception ex)
-{
-    Console.WriteLine(ex.Message);
-    Console.WriteLine(ex.StackTrace);
-}
-
-
 var file = await Node.GetNode(@"192.168.0.1\ShareName\FileName.txt", "userName", "password");
 var nodes = await file.GetList();
 // nodes is null.
