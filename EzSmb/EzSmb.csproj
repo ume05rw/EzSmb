@@ -8,15 +8,15 @@
     <RepositoryType>git</RepositoryType>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <PackageTags>smb cifs samba nas shared smbclient</PackageTags>
-    <PackageReleaseNotes>Fix static Node.GetServers method exception process and dispose detection.</PackageReleaseNotes>
+    <PackageReleaseNotes>Mod static Node.GetServers method initialization and packet sending to be performed async.</PackageReleaseNotes>
     <Authors>Do-Be's</Authors>
     <Company>Do-Be's</Company>
     <Description>It's easy to use, and supports SMB ver2 for Windows 10.
 Xamarin &amp; .NET Core can access Windows Shared Folders and NAS without using mpr.dll or Netapi32.dll.
 Supports .Net Standard 2.0.</Description>
-    <AssemblyVersion>1.0.6.0</AssemblyVersion>
-    <FileVersion>1.0.6.0</FileVersion>
-    <Version>1.0.6.0</Version>
+    <AssemblyVersion>1.0.7.0</AssemblyVersion>
+    <FileVersion>1.0.7.0</FileVersion>
+    <Version>1.0.7</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

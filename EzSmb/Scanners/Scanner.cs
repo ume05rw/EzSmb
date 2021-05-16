@@ -35,8 +35,6 @@ namespace EzSmb.Scanners
             this._clients = new List<ClientSet>();
             this._querySet = new Dictionary<IPAddress, IPAddress[]>();
             this._resultAddresses = new List<IPAddress>();
-
-            this.InitTargets();
         }
 
         private void InitTargets()
@@ -137,24 +135,29 @@ namespace EzSmb.Scanners
 
         public async Task<IPAddress[]> Scan(int waitMsec = 0)
         {
-            foreach (var pair in this._querySet)
+            await Task.Run(() =>
             {
-                var cset = new ClientSet(pair.Key);
+                this.InitTargets();
 
-                cset.Client.BeginReceive(this.OnRecieved, cset);
-
-                foreach (var toAddr in pair.Value)
+                foreach (var pair in this._querySet)
                 {
-                    var destEp = new IPEndPoint(toAddr, 137);
-                    cset.Client.Send(
-                        Scanner.NameQueryBytes,
-                        Scanner.NameQueryBytes.Length,
-                        destEp
-                    );
-                }
+                    var cset = new ClientSet(pair.Key);
 
-                this._clients.Add(cset);
-            }
+                    cset.Client.BeginReceive(this.OnRecieved, cset);
+
+                    foreach (var toAddr in pair.Value)
+                    {
+                        var destEp = new IPEndPoint(toAddr, 137);
+                        cset.Client.Send(
+                            Scanner.NameQueryBytes,
+                            Scanner.NameQueryBytes.Length,
+                            destEp
+                        );
+                    }
+
+                    this._clients.Add(cset);
+                }
+            }).ConfigureAwait(false);
 
             var wait = (0 < waitMsec)
                 ? (int)waitMsec
