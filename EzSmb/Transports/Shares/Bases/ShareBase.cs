@@ -23,7 +23,7 @@ namespace EzSmb.Transports.Shares.Bases
         private bool disposedValue;
 
         protected abstract string PathPrefix { get; }
-        protected ISMBFileStore Store => this._store;
+        public ISMBFileStore Store => this._store;
         public bool IsConnected { get; }
 
 
@@ -51,11 +51,11 @@ namespace EzSmb.Transports.Shares.Bases
         }
 
 
-        protected abstract IHandler GetHandler(string path, HandleType handleType, NodeType nodeType);
+        public abstract IHandler GetHandler(string path, HandleType handleType, NodeType nodeType);
         public abstract Node[] GetList(Node node);
         protected abstract Node ExecMove(Node fromNode, Node toNode);
 
-        protected virtual string FormatPath(string path)
+        public virtual string FormatPath(string path)
         {
             return $@"{this.PathPrefix}{Utils.Resolve(path)}";
         }
