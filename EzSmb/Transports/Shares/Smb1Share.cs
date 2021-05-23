@@ -38,7 +38,7 @@ namespace EzSmb.Transports.Shares
                 + "*";
         }
 
-        protected override IHandler GetHandler(
+        public override IHandler GetHandler(
             string path,
             HandleType handleType,
             NodeType nodeType

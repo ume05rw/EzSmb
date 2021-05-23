@@ -163,6 +163,25 @@
             
              </remarks>
         </member>
+        <member name="M:EzSmb.Node.GetReaderStream">
+            <summary>
+            Get Stream.
+            </summary>
+            <returns></returns>
+            <remarks>
+            Stream is Read Only.
+            </remarks>
+        </member>
+        <member name="M:EzSmb.Node.GetStream(System.String)">
+            <summary>
+            Get Stream.
+            </summary>
+            <param name="relatedPath"></param>
+            <returns></returns>
+            <remarks>
+            Stream is Read Only.
+            </remarks>
+        </member>
         <member name="M:EzSmb.Node.Dispose(System.Boolean)">
             <summary>
             Dispose
@@ -428,6 +447,161 @@
             Clear error strings
             </summary>
         </member>
+        <member name="M:EzSmb.Streams.Caches.FileCache.GetRanges">
+            <summary>
+            for test
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EzSmb.Streams.Caches.FileCache.Add(System.Int64,System.IO.MemoryStream)">
+            <summary>
+            Add Range
+            </summary>
+            <param name="offset"></param>
+            <param name="memory"></param>
+        </member>
+        <member name="M:EzSmb.Streams.Caches.FileCache.GetRamainings(System.Int64,System.Int64)">
+            <summary>
+            Get Range-Array to be query.
+            </summary>
+            <param name="offset"></param>
+            <param name="count"></param>
+            <returns></returns>
+        </member>
+        <member name="T:EzSmb.Streams.ReaderStream">
+            <summary>
+            Smb Reader Stream
+            </summary>
+            <remarks>
+            Read Only.
+            </remarks>
+        </member>
+        <member name="P:EzSmb.Streams.ReaderStream.CanRead">
+            <summary>
+            Readable stream or not.
+            </summary>
+        </member>
+        <member name="P:EzSmb.Streams.ReaderStream.CanSeek">
+            <summary>
+            Seekable stream or not.
+            </summary>
+        </member>
+        <member name="P:EzSmb.Streams.ReaderStream.CanWrite">
+            <summary>
+            Writable stream or not.
+            </summary>
+        </member>
+        <member name="P:EzSmb.Streams.ReaderStream.CanTimeout">
+            <summary>
+            Timeout enable or not.
+            </summary>
+        </member>
+        <member name="P:EzSmb.Streams.ReaderStream.Length">
+            <summary>
+            Stream length.
+            </summary>
+        </member>
+        <member name="P:EzSmb.Streams.ReaderStream.ReadTimeout">
+            <summary>
+            Timeout mSec.
+            </summary>
+        </member>
+        <member name="P:EzSmb.Streams.ReaderStream.Position">
+            <summary>
+            Current position.
+            </summary>
+        </member>
+        <member name="P:EzSmb.Streams.ReaderStream.IsUseFileCache">
+             <summary>
+             Cache all responses of in a temp file.
+             </summary>
+             <remarks>
+             Default: false
+            
+             Write all the data to a file once this stream get it.
+             The cache file will be deleted when it's disposed.
+             </remarks>
+        </member>
+        <member name="M:EzSmb.Streams.ReaderStream.#ctor(EzSmb.Node)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="node"></param>
+        </member>
+        <member name="M:EzSmb.Streams.ReaderStream.Flush">
+            <summary>
+            Clear caches
+            </summary>
+        </member>
+        <member name="M:EzSmb.Streams.ReaderStream.Seek(System.Int64,System.IO.SeekOrigin)">
+            <summary>
+            Seek
+            </summary>
+            <param name="offset"></param>
+            <param name="origin"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EzSmb.Streams.ReaderStream.Read(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Read
+            </summary>
+            <param name="buffer"></param>
+            <param name="offset"></param>
+            <param name="count"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EzSmb.Streams.ReaderStream.SetLength(System.Int64)">
+            <summary>
+            Not Supported.
+            </summary>
+        </member>
+        <member name="M:EzSmb.Streams.ReaderStream.Write(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Not Supported.
+            </summary>
+        </member>
+        <member name="P:EzSmb.Streams.ReaderStream.Errors">
+            <summary>
+            Error string array
+            </summary>
+        </member>
+        <member name="P:EzSmb.Streams.ReaderStream.HasError">
+            <summary>
+            Error flag
+            </summary>
+        </member>
+        <member name="M:EzSmb.Streams.ReaderStream.AddError(System.String,System.String)">
+            <summary>
+            Add error string
+            </summary>
+            <param name="methodName"></param>
+            <param name="message"></param>
+        </member>
+        <member name="M:EzSmb.Streams.ReaderStream.AddError(System.String,System.String,System.Exception)">
+            <summary>
+            Add error string
+            </summary>
+            <param name="methodName"></param>
+            <param name="message"></param>
+            <param name="ex"></param>
+        </member>
+        <member name="M:EzSmb.Streams.ReaderStream.CopyErrors(EzSmb.Shareds.Interfaces.IErrorManaged)">
+            <summary>
+            Add error string from IErrorManaged
+            </summary>
+            <param name="errorManaged"></param>
+        </member>
+        <member name="M:EzSmb.Streams.ReaderStream.ClearErrors">
+            <summary>
+            Clear error strings
+            </summary>
+        </member>
+        <member name="M:EzSmb.Streams.ReaderStream.Dispose(System.Boolean)">
+            <summary>
+            Dispose
+            </summary>
+            <param name="disposing"></param>
+        </member>
         <member name="T:EzSmb.Transports.Connection">
             <summary>
             ISMBClient manager class
@@ -531,6 +705,90 @@
             <summary>
             Handle object manager for SMB2
             </summary>
+        </member>
+        <member name="P:EzSmb.Transports.Shares.Interfaces.IShare.IsConnected">
+            <summary>
+            Connection Status
+            </summary>
+        </member>
+        <member name="P:EzSmb.Transports.Shares.Interfaces.IShare.Store">
+            <summary>
+            ISMBFileStore
+            </summary>
+            <remarks>
+            MaxReadSize:
+              SMB1:
+              SMB2:
+            </remarks>
+        </member>
+        <member name="M:EzSmb.Transports.Shares.Interfaces.IShare.FormatPath(System.String)">
+            <summary>
+            Format Path String
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EzSmb.Transports.Shares.Interfaces.IShare.GetHandler(System.String,EzSmb.Transports.Shares.Handlers.Enums.HandleType,EzSmb.NodeType)">
+            <summary>
+            Create Handle
+            </summary>
+            <param name="path"></param>
+            <param name="handleType"></param>
+            <param name="nodeType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EzSmb.Transports.Shares.Interfaces.IShare.GetNode(EzSmb.Paths.PathSet,EzSmb.Params.FixedParamSet)">
+            <summary>
+            Get Node
+            </summary>
+            <param name="pathSet"></param>
+            <param name="paramSet"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EzSmb.Transports.Shares.Interfaces.IShare.GetList(EzSmb.Node)">
+            <summary>
+            Get Child Node List
+            </summary>
+            <param name="node"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EzSmb.Transports.Shares.Interfaces.IShare.Read(EzSmb.Node)">
+            <summary>
+            Get MemoryStream of File
+            </summary>
+            <param name="node"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EzSmb.Transports.Shares.Interfaces.IShare.Write(EzSmb.Node,System.IO.Stream)">
+            <summary>
+            Write File from Stream
+            </summary>
+            <param name="node"></param>
+            <param name="stream"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EzSmb.Transports.Shares.Interfaces.IShare.CreateFolder(EzSmb.Node,System.String)">
+            <summary>
+            Create Sub Folder
+            </summary>
+            <param name="node"></param>
+            <param name="folderName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EzSmb.Transports.Shares.Interfaces.IShare.Delete(EzSmb.Node)">
+            <summary>
+            Delete Node
+            </summary>
+            <param name="node"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EzSmb.Transports.Shares.Interfaces.IShare.Move(EzSmb.Node,System.String)">
+            <summary>
+            Move Node
+            </summary>
+            <param name="node"></param>
+            <param name="newPath"></param>
+            <returns></returns>
         </member>
         <member name="T:EzSmb.Transports.Shares.Smb1Share">
             <summary>

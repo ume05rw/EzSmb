@@ -4,6 +4,7 @@ using EzSmb.Scanners;
 using EzSmb.Shareds;
 using EzSmb.Shareds.Bases;
 using EzSmb.Shareds.Interfaces;
+using EzSmb.Streams;
 using EzSmb.Transports;
 using System;
 using System.Diagnostics;
@@ -666,6 +667,56 @@ namespace EzSmb
                     return result;
                 }
             }).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Get Stream.
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>
+        /// Stream is Read Only.
+        /// </remarks>
+        public ReaderStream GetReaderStream()
+        {
+            if (this.Type != NodeType.File)
+            {
+                this.AddError("GetReaderStream", $"Invalid Operation: NodeType.{this.Type}");
+
+                return null;
+            }
+
+            return new ReaderStream(this);
+        }
+
+
+        /// <summary>
+        /// Get Stream.
+        /// </summary>
+        /// <param name="relatedPath"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Stream is Read Only.
+        /// </remarks>
+        public async Task<ReaderStream> GetStream(string relatedPath)
+        {
+            var node = await this.ResolveNode(relatedPath);
+            if (node == null)
+                return null;
+
+            if (node != this)
+            {
+                var result = node.GetReaderStream();
+                if (result == null)
+                {
+                    this.CopyErrors(node);
+
+                    return null;
+                }
+
+                return result;
+            }
+
+            return this.GetReaderStream();
         }
 
         private async Task<Node> ResolveNode(string relatedPath, bool suppressErrors = false)
