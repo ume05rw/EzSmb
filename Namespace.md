@@ -5,7 +5,6 @@ EzSmb
   |
   +-- Node
   |     |
-  |     |
   |     +-- static Task<Node> GetNode(string path, ParamSet paramSet = null, bool throwException = false)
   |     +-- static Task<Node> GetNode(string path, string userName, string password, bool throwException = false)
   |     +-- static Task<string[]> GetServers(int waitMsec = 0)
@@ -23,6 +22,8 @@ EzSmb
   |     +-- Node GetParent()
   |     +-- Task<Node> GetNode(string relatedPath)
   |     +-- Task<Node[]> GetList(string relatedPath = null)
+  |     +-- ReaderStream GetReaderStream()
+  |     +-- Task<ReaderStream> GetStream(string relatedPath)
   |     +-- Task<MemoryStream> Read(string relatedPath = null)
   |     +-- Task<bool> Write(Stream stream, string relatedPath = null)
   |     +-- Task<Node> CreateFolder(string folderName, string relatedPath = null)
@@ -60,4 +61,26 @@ EzSmb
   |           +-- string FullPath
   |
   +-- NodeType
+  |
+  +-- Streams
+        |
+        +-- ReaderStream
+              |
+              +-- bool CanRead
+              +-- bool CanSeek
+              +-- bool CanWrite
+              +-- bool CanTimeout
+              +-- long Length
+              +-- int ReadTimeout
+              +-- long Position
+              +-- bool IsUseFileCache
+              +-- bool HasError
+              +-- string[] Errors
+              |
+              +-- void Flush()
+              +-- long Seek(long offset, SeekOrigin origin)
+              +-- int Read(byte[] buffer, int offset, int count)
+              +-- void SetLength(long value)
+              +-- void ClearErrors()
+              +-- ... (various other methods of System.IO.Stream...)
 ```

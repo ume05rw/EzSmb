@@ -164,6 +164,26 @@ namespace EzSmbTest
             });
         }
 
+        public static async Task RandomAccessByStream()
+        {
+            var file = await Node.GetNode(@"192.168.0.1\ShareName\FolderName\FileName.txt", "userName", "password");
+            using (var stream = file.GetReaderStream())
+            {
+                var bytes1 = new byte[1024];
+                var bytes2 = new byte[32];
+
+                // Skip a few bytes.
+                stream.Position = 64;
+                var readed1 = stream.Read(bytes1, 0, 1024);
+                Console.WriteLine(Encoding.UTF8.GetString(bytes1.Take(readed1).ToArray()));
+
+                // Access from the end.
+                stream.Seek(-32, SeekOrigin.End);
+                var readed2 = await stream.ReadAsync(bytes2.AsMemory(0, 32));
+                Console.WriteLine(Encoding.UTF8.GetString(bytes2.Take(readed2).ToArray()));
+            }
+        }
+
         public static async Task GetErrors()
         {
             try

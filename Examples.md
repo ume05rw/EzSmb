@@ -4,6 +4,7 @@
 ```csharp
 //using EzSmb;
 //using System;
+//using System.Threading.Tasks;
 
 // Get folder Node.
 var folder = await Node.GetNode(@"192.168.0.1\ShareName\FolderName", "userName", "password");
@@ -21,6 +22,7 @@ foreach (var node in nodes)
 //using EzSmb;
 //using System;
 //using System.Text;
+//using System.Threading.Tasks;
 
 // Get file Node.
 var file = await Node.GetNode(@"192.168.0.1\ShareName\FolderName\FileName.txt", "userName", "password");
@@ -37,8 +39,9 @@ using (var stream = await file.Read())
 ```csharp
 //using EzSmb;
 //using System.IO;
-//using System.Text;
 //using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
 
 // Get Node of base folder.
 var folder = await Node.GetNode(@"192.168.0.1\ShareName\FolderName", "userName", "password");
@@ -71,6 +74,7 @@ using (var stream = new MemoryStream(text))
 
 //using EzSmb;
 //using System;
+//using System.Threading.Tasks;
 
 // Get Node of file.
 var file = await Node.GetNode(@"192.168.0.1\ShareName\FileName.txt", "userName", "password");
@@ -98,6 +102,7 @@ Console.WriteLine(movedFolder.FullPath);
 ```csharp
 //using EzSmb;
 //using System;
+//using System.Threading.Tasks;
 
 // Get Node of file.
 var file = await Node.GetNode(@"192.168.0.1\ShareName\FileName.txt", "userName", "password");
@@ -124,6 +129,7 @@ await folder.Delete();
 
 //using EzSmb;
 //using System;
+//using System.Threading.Tasks;
 
 // Get IP-Address string array.
 var ipStrings = await Node.GetServers();
@@ -159,6 +165,7 @@ foreach (var ipString in ipStrings)
 //using EzSmb;
 //using EzSmb.Params;
 //using EzSmb.Params.Enums;
+//using System.Threading.Tasks;
 
 // Normally.
 var server1 = await Node.GetNode("192.168.0.1", "userName", "password");
@@ -183,11 +190,39 @@ var server4 = await Node.GetNode("192.168.0.1", new ParamSet()
 });
 ```
 * * *
+#### Random access by Stream:
+```csharp
+//using EzSmb;
+//using System;
+//using System.IO;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
+
+var file = await Node.GetNode(@"192.168.0.1\ShareName\FolderName\FileName.txt", "userName", "password");
+using (var stream = file.GetReaderStream())
+{
+    var bytes1 = new byte[1024];
+    var bytes2 = new byte[32];
+
+    // Skip a few bytes.
+    stream.Position = 64;
+    var readed1 = stream.Read(bytes1, 0, 1024);
+    Console.WriteLine(Encoding.UTF8.GetString(bytes1.Take(readed1).ToArray()));
+
+    // Access from the end.
+    stream.Seek(-32, SeekOrigin.End);
+    var readed2 = await stream.ReadAsync(bytes2.AsMemory(0, 32));
+    Console.WriteLine(Encoding.UTF8.GetString(bytes2.Take(readed2).ToArray()));
+}
+```
+* * *
 #### Get Errors:
 
 ```csharp
 //using EzSmb;
 //using System;
+//using System.Threading.Tasks;
 
 var file = await Node.GetNode(@"192.168.0.1\ShareName\FileName.txt", "userName", "password");
 var nodes = await file.GetList();
