@@ -57,7 +57,16 @@ using (var stream = await file.Read())
 }
 ```
 
-and more: [Examples](https://github.com/ume05rw/EzSmb/blob/master/Examples.md), [Namespace](https://github.com/ume05rw/EzSmb/blob/master/Namespace.md)
+and more:  
+- [Create new folder/file](https://github.com/ume05rw/EzSmb/blob/master/Examples.md#create-new-folderfile)
+- [Move folder/file](https://github.com/ume05rw/EzSmb/blob/master/Examples.md#move-folderfile)
+- [Delete folder/file](https://github.com/ume05rw/EzSmb/blob/master/Examples.md#delete-folderfile)
+- [Scan servers & shares on LAN](https://github.com/ume05rw/EzSmb/blob/master/Examples.md#scan-servers--shares-on-lan)
+- [Authentication](https://github.com/ume05rw/EzSmb/blob/master/Examples.md#authentication)
+- [Random access by Stream](https://github.com/ume05rw/EzSmb/blob/master/Examples.md#random-access-by-stream)
+- [Get errors](https://github.com/ume05rw/EzSmb/blob/master/Examples.md#get-errors)
+
+Class Tree: [Namespace.md](https://github.com/ume05rw/EzSmb/blob/master/Namespace.md)
 
 
 ## Licence

@@ -164,6 +164,7 @@ namespace EzSmbTest
             });
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0063:単純な 'using' ステートメントを使用する", Justification = "<保留中>")]
         public static async Task RandomAccessByStream()
         {
             var file = await Node.GetNode(@"192.168.0.1\ShareName\FolderName\FileName.txt", "userName", "password");

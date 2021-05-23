@@ -217,7 +217,7 @@ using (var stream = file.GetReaderStream())
 }
 ```
 * * *
-#### Get Errors:
+#### Get errors:
 
 ```csharp
 //using EzSmb;
