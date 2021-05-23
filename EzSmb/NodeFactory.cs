@@ -134,7 +134,7 @@ namespace EzSmb
                     pathSet,
                     paramSet
                 );
-                result.Size = stdInfo?.AllocationSize;
+                result.Size = stdInfo?.EndOfFile;
                 result.Created = basicInfo.CreationTime;
                 result.Updated = basicInfo.LastWriteTime;
                 result.LastAccessed = basicInfo.LastAccessTime;
@@ -183,7 +183,7 @@ namespace EzSmb
                     pathSet,
                     parentNode.ParamSet
                 );
-                result.Size = info.AllocationSize;
+                result.Size = info.EndOfFile;
                 result.Created = info.CreationTime;
                 result.Updated = info.LastWriteTime;
                 result.LastAccessed = info.LastAccessTime;
@@ -232,7 +232,7 @@ namespace EzSmb
                     pathSet,
                     parentNode.ParamSet
                 );
-                result.Size = info.AllocationSize;
+                result.Size = info.EndOfFile;
                 result.Created = info.CreationTime;
                 result.Updated = info.LastWriteTime;
                 result.LastAccessed = info.LastAccessTime;

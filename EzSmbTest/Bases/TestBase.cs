@@ -7,6 +7,8 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace EzSmbTest.Bases
 {
@@ -155,6 +157,16 @@ namespace EzSmbTest.Bases
                 Assert.True(false, "Not Failed.");
             Assert.True(node.HasError);
             Assert.NotEmpty(node.Errors);
+        }
+
+        protected void Dump(string message, [CallerMemberName] string propertyName = "")
+        {
+            Debug.WriteLine($"{DateTime.Now:HH:mm:ss.fff}: {this.GetType()}.{propertyName}: {message}");
+        }
+
+        protected void Dump(Exception ex, [CallerMemberName] string propertyName = "")
+        {
+            this.Dump($"Exception Message = {ex.Message}, StackTrace = {ex.StackTrace}", propertyName);
         }
     }
 }

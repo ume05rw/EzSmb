@@ -9,19 +9,23 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EzSmb.Streams
 {
     /// <summary>
-    /// SmbStream
+    /// Smb Reader Stream
     /// </summary>
     /// <remarks>
     /// Read Only.
     /// </remarks>
-    public class SmbStream : Stream, IErrorManaged, IDisposable
+    public class ReaderStream : Stream, IErrorManaged, IDisposable
     {
+#pragma warning disable IDE0052 // for error dump.
         private string _nodeName;
         private string _fullPath;
+#pragma warning restore IDE0052
         private string _elementPath;
         private Connection _connection;
         private IShare _share;
@@ -55,6 +59,11 @@ namespace EzSmb.Streams
         /// Stream length.
         /// </summary>
         public override long Length => this._length;
+
+        /// <summary>
+        /// Timeout mSec.
+        /// </summary>
+        public override int ReadTimeout { get; set; }
 
         /// <summary>
         /// Current position.
@@ -104,7 +113,7 @@ namespace EzSmb.Streams
         /// Constructor
         /// </summary>
         /// <param name="node"></param>
-        public SmbStream(Node node) : base()
+        internal ReaderStream(Node node) : base()
         {
             this._locker = new Locker();
             this._errors = new List<string>();
@@ -116,9 +125,8 @@ namespace EzSmb.Streams
                 return;
             }
 
-            this._elementPath = this._share.FormatPath(node.PathSet.ElementsPath);
-            this._fullPath = node.PathSet.FullPath;
             this._nodeName = node.Name;
+            this._fullPath = node.PathSet.FullPath;
 
             if (node.Type != NodeType.File)
                 this.AddError("Constructor", $"InvalidOperation: NodeTyoe.{node.Type}");
@@ -145,9 +153,11 @@ namespace EzSmb.Streams
                 return;
             }
 
+            this._elementPath = this._share.FormatPath(node.PathSet.ElementsPath);
             this._length = (long)node.Size;
             this._position = 0;
             this._isUseFileCache = false;
+            this.ReadTimeout = 0;
         }
 
         /// <summary>
@@ -162,182 +172,6 @@ namespace EzSmb.Streams
         }
 
         /// <summary>
-        /// Read
-        /// </summary>
-        /// <param name="buffer"></param>
-        /// <param name="offset"></param>
-        /// <param name="count"></param>
-        /// <returns></returns>
-        public override int Read(byte[] buffer, int offset, int count)
-        {
-            if (this.disposedValue)
-                throw new ObjectDisposedException("EzSmb.Streams.SmbStream");
-            if (this._share == null || !this._share.IsConnected)
-                throw new IOException("Not Connected.");
-            if (buffer == null)
-                throw new ArgumentNullException("buffer");
-            if (buffer.Length < (offset + count))
-                throw new ArgumentException("buffer.Length is not enough.");
-            if (offset < 0)
-                throw new ArgumentOutOfRangeException("offset");
-            if (count < 0)
-                throw new ArgumentOutOfRangeException("count");
-
-            return this._locker.LockedInvoke<int>(() =>
-            {
-                if (this.IsUseFileCache)
-                {
-                    long initialPosition = this._position;
-
-                    var cacheSet = this._cache.GetCacheSet(initialPosition, count);
-                    if (cacheSet.Ramainings.Count <= 0)
-                    {
-                        // All the data had been cached.
-                        cacheSet.Cache.ToArray().CopyTo(buffer, offset);
-                        this._position = initialPosition + count;
-
-                        return (int)cacheSet.Cache.Length;
-                    }
-
-                    var index = 0;
-                    foreach (var range in cacheSet.Ramainings)
-                    {
-                        var partialBuffer = new byte[range.Count];
-                        this._position = range.Position;
-
-                        var readed = this.InnerRead(partialBuffer, 0, (int)range.Count);
-
-                        if (
-                            (readed < range.Count)
-                            && ((range.Position + range.Count) < this.Length)
-                        )
-                        {
-                            // this.Length has not been reached, but the count ordered has not been reached.
-#pragma warning disable IDE0028
-                            var messages = new List<string>();
-#pragma warning restore IDE0028
-                            messages.Add(string.Empty);
-                            messages.Add($"*** File Reading Failed on EzSmb.Streams.SmbStream.Read, with FileCache. ***");
-                            messages.Add(string.Empty);
-                            messages.Add($"  Node:");
-                            messages.Add($"    Name = {this._nodeName}");
-                            messages.Add($"    FullPath = {this._fullPath}");
-                            messages.Add($"    SharePath = {this._elementPath}");
-                            messages.Add(string.Empty);
-                            messages.Add($"  Arguments:");
-                            messages.Add($"    buffer.Length = {buffer.Length}");
-                            messages.Add($"    offset = {offset}");
-                            messages.Add($"    count = {count}");
-                            messages.Add(string.Empty);
-                            messages.Add($"  Start Status: this.Position = {initialPosition}");
-                            messages.Add($"  Error Status: this.Position = {this._position}");
-                            messages.Add(string.Empty);
-                            messages.Add($"  CacheSet:");
-                            messages.Add($"    Cache.Length = {cacheSet.Cache.Length}");
-                            messages.Add($"    Ramainings.Count = {cacheSet.Ramainings.Count}");
-                            messages.Add($"      Range: index = {index}");
-                            messages.Add($"        Position = {range.Position}");
-                            messages.Add($"        Count = {range.Count}");
-                            messages.Add($"      readed = {readed}");
-                            messages.Add(string.Empty);
-                            messages.Add(string.Empty);
-
-                            var message = string.Join("\r\n", messages);
-                            this.AddError("Read", message);
-                            Console.WriteLine(messages);
-
-                            throw new IOException("File Reading Failed.");
-                        }
-
-                        cacheSet.Cache.Position = range.Position - initialPosition;
-                        cacheSet.Cache.Write(partialBuffer, 0, readed);
-                        this._position = range.Position + readed;
-                        index++;
-                    }
-
-                    cacheSet.Cache.ToArray().CopyTo(buffer, offset);
-
-                    return (int)cacheSet.Cache.Length;
-                }
-                else
-                {
-                    return this.InnerRead(buffer, offset, count);
-                }
-            });
-        }
-
-        private int InnerRead(byte[] buffer, int offset, int count)
-        {
-            if (this.disposedValue)
-                throw new ObjectDisposedException("EzSmb.Streams.SmbStream");
-            if (this._share == null || !this._share.IsConnected)
-                throw new IOException("Not Connected.");
-            if (buffer == null)
-                throw new ArgumentNullException("buffer");
-            if (buffer.Length < (offset + count))
-                throw new ArgumentException("buffer.Length is not enough.");
-            if (offset < 0)
-                throw new ArgumentOutOfRangeException("offset");
-            if (count < 0)
-                throw new ArgumentOutOfRangeException("count");
-
-            int readed = 0;
-            Exception exception = null;
-            using (var hdr = this._share.GetHandler(this._elementPath, HandleType.Read, NodeType.File))
-            {
-                if (!hdr.Succeeded)
-                    throw new IOException("File Reading Failed.");
-
-                var initialPosition = this._position;
-
-                while (true)
-                {
-                    var remainingLength = count - readed;
-                    if (remainingLength <= 0)
-                        break;
-
-                    var queryLength = (this._share.Store.MaxReadSize < remainingLength)
-                        ? (int)this._share.Store.MaxReadSize
-                        : remainingLength;
-
-                    var status = this._share.Store.ReadFile(
-                        out var data,
-                        hdr.Handle,
-                        this._position,
-                        (int)queryLength
-                    );
-
-                    if (
-                        status != NTStatus.STATUS_SUCCESS
-                        && status != NTStatus.STATUS_END_OF_FILE
-                    )
-                    {
-                        exception = new IOException("File Reading Failed.");
-                        this.AddError("ReadStream", $"File Reading Failed.");
-
-                        break;
-                    }
-
-                    if (status == NTStatus.STATUS_END_OF_FILE || data.Length == 0)
-                        break;
-
-                    data.CopyTo(buffer, offset + readed);
-                    readed += data.Length;
-                    this._position += data.Length;
-                }
-
-                if (exception == null && this.IsUseFileCache)
-                    using (var stream = new MemoryStream(buffer.Skip(offset).Take(readed).ToArray()))
-                        this._cache.Add(initialPosition, stream);
-            }
-
-            if (exception != null)
-                throw exception;
-
-            return readed;
-        }
-
-        /// <summary>
         /// Seek
         /// </summary>
         /// <param name="offset"></param>
@@ -346,7 +180,7 @@ namespace EzSmb.Streams
         public override long Seek(long offset, SeekOrigin origin)
         {
             if (this.disposedValue)
-                throw new ObjectDisposedException("EzSmb.Streams.SmbStream");
+                throw new ObjectDisposedException("EzSmb.Streams.ReaderStream");
 
             return this._locker.LockedInvoke<long>(() =>
             {
@@ -383,6 +217,222 @@ namespace EzSmb.Streams
             });
         }
 
+
+        /// <summary>
+        /// Read
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public override int Read(byte[] buffer, int offset, int count)
+        {
+            if (this.disposedValue)
+                throw new ObjectDisposedException("EzSmb.Streams.ReaderStream");
+            if (this._share == null || !this._share.IsConnected)
+                throw new IOException("Not Connected.");
+            if (buffer == null)
+                throw new ArgumentNullException("buffer");
+            if (buffer.Length < (offset + count))
+                throw new ArgumentException("buffer.Length is not enough.");
+            if (offset < 0)
+                throw new ArgumentOutOfRangeException("offset");
+            if (count < 0)
+                throw new ArgumentOutOfRangeException("count");
+
+            var canceller = new CancellationTokenSource();
+            if (0 < this.ReadTimeout)
+            {
+                Task.Delay(this.ReadTimeout)
+                    .ContinueWith(t =>
+                    {
+                        canceller.Cancel();
+                    })
+                    .ConfigureAwait(false);
+            }
+
+            return this._locker.LockedInvoke<int>(() =>
+            {
+                if (this.IsUseFileCache)
+                {
+                    long initialPosition = this._position;
+
+                    var cacheSet = this._cache.GetCacheSet(initialPosition, count);
+                    if (cacheSet.Ramainings.Count <= 0)
+                    {
+                        // All the data had been cached.
+                        cacheSet.Cache.ToArray().CopyTo(buffer, offset);
+                        this._position = initialPosition + count;
+
+                        return (int)cacheSet.Cache.Length;
+                    }
+
+                    var index = 0;
+                    foreach (var range in cacheSet.Ramainings)
+                    {
+                        var partialBuffer = new byte[range.Count];
+                        this._position = range.Position;
+
+                        canceller.Token.ThrowIfCancellationRequested();
+
+                        var readed = this.InnerRead(
+                            partialBuffer,
+                            0,
+                            (int)range.Count,
+                            canceller.Token
+                        );
+
+                        if (
+                            (readed < range.Count)
+                            && ((range.Position + range.Count) < this.Length)
+                        )
+                        {
+                            // So far, never been here.
+                            //// this.Length has not been reached, but the count ordered has not been reached.
+                            //var messages = new List<string>()
+                            //{
+                            //    string.Empty,
+                            //    $"*** File Reading Failed on EzSmb.Streams.ReaderStream.Read, with FileCache. ***",
+                            //    string.Empty,
+                            //    $"  Node:",
+                            //    $"    Name = {this._nodeName}",
+                            //    $"    FullPath = {this._fullPath}",
+                            //    $"    SharePath = {this._elementPath}",
+                            //    string.Empty,
+                            //    $"  Arguments:",
+                            //    $"    buffer.Length = {buffer.Length}",
+                            //    $"    offset = {offset}",
+                            //    $"    count = {count}",
+                            //    string.Empty,
+                            //    $"  Start Status: this.Position = {initialPosition}",
+                            //    $"  Error Status: this.Position = {this._position}",
+                            //    string.Empty,
+                            //    $"  CacheSet:",
+                            //    $"    Cache.Length = {cacheSet.Cache.Length}",
+                            //    $"    Ramainings.Count = {cacheSet.Ramainings.Count}",
+                            //    $"      Range: index = {index}",
+                            //    $"        Position = {range.Position}",
+                            //    $"        Count = {range.Count}",
+                            //    $"      readed = {readed}",
+                            //    string.Empty,
+                            //    string.Empty
+                            //};
+
+                            //var message = string.Join("\r\n", messages);
+                            //this.AddError("Read", message);
+                            //Console.WriteLine(messages);
+
+                            throw new IOException("*** File Reading Failed with ReaderStream.IsUseFileCache = true ***");
+                        }
+
+                        cacheSet.Cache.Position = range.Position - initialPosition;
+                        cacheSet.Cache.Write(partialBuffer, 0, readed);
+                        this._position = range.Position + readed;
+                        index++;
+                    }
+
+                    cacheSet.Cache.ToArray().CopyTo(buffer, offset);
+
+                    return (int)cacheSet.Cache.Length;
+                }
+                else
+                {
+                    return this.InnerRead(buffer, offset, count, canceller.Token);
+                }
+            });
+        }
+
+        private int InnerRead(
+            byte[] buffer,
+            int offset,
+            int count,
+            CancellationToken cancelToken
+        )
+        {
+            if (this.disposedValue)
+                throw new ObjectDisposedException("EzSmb.Streams.ReaderStream");
+            if (this._share == null || !this._share.IsConnected)
+                throw new IOException("Not Connected.");
+            if (buffer == null)
+                throw new ArgumentNullException("buffer");
+            if (buffer.Length < (offset + count))
+                throw new ArgumentException("buffer.Length is not enough.");
+            if (offset < 0)
+                throw new ArgumentOutOfRangeException("offset");
+            if (count < 0)
+                throw new ArgumentOutOfRangeException("count");
+
+            cancelToken.ThrowIfCancellationRequested();
+
+            int readed = 0;
+            Exception exception = null;
+            using (var hdr = this._share.GetHandler(this._elementPath, HandleType.Read, NodeType.File))
+            {
+                if (!hdr.Succeeded)
+                    throw new IOException("File Reading Failed.");
+
+                var initialPosition = this._position;
+
+                while (true)
+                {
+                    if (cancelToken.IsCancellationRequested)
+                    {
+                        exception = new OperationCanceledException(cancelToken);
+
+                        break;
+                    }
+
+                    var remainingLength = count - readed;
+                    if (remainingLength <= 0)
+                        break;
+
+                    var queryLength = (this._share.Store.MaxReadSize < remainingLength)
+                        ? (int)this._share.Store.MaxReadSize
+                        : remainingLength;
+
+                    var status = this._share.Store.ReadFile(
+                        out var data,
+                        hdr.Handle,
+                        this._position,
+                        (int)queryLength
+                    );
+
+                    if (cancelToken.IsCancellationRequested)
+                    {
+                        exception = new OperationCanceledException(cancelToken);
+
+                        break;
+                    }
+
+                    if (
+                        status != NTStatus.STATUS_SUCCESS
+                        && status != NTStatus.STATUS_END_OF_FILE
+                    )
+                    {
+                        exception = new IOException("File Reading Failed.");
+                        this.AddError("ReadStream", $"File Reading Failed.");
+
+                        break;
+                    }
+
+                    if (status == NTStatus.STATUS_END_OF_FILE || data.Length == 0)
+                        break;
+
+                    data.CopyTo(buffer, offset + readed);
+                    readed += data.Length;
+                    this._position += data.Length;
+                }
+
+                if (exception == null && this.IsUseFileCache)
+                    using (var stream = new MemoryStream(buffer.Skip(offset).Take(readed).ToArray()))
+                        this._cache.Add(initialPosition, stream);
+            }
+
+            if (exception != null)
+                throw exception;
+
+            return readed;
+        }
 
         #region "Not Supported"
 
