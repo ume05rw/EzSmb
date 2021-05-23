@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Streams\Caches\**" />
+    <EmbeddedResource Remove="Streams\Caches\**" />
+    <None Remove="Streams\Caches\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Smb1RenameTest.cs" />
     <Compile Remove="UtilsTest.cs" />
   </ItemGroup>

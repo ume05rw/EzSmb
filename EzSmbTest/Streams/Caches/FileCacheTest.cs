@@ -6,6 +6,9 @@ using Xunit;
 
 namespace EzSmbTest.Streams.Caches
 {
+    /// <summary>
+    /// Set FileCache class to public, and run.
+    /// </summary>
     public class FileCacheTest
     {
         [Fact]

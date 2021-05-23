@@ -436,13 +436,17 @@ namespace EzSmb.Streams
 
         #region "Not Supported"
 
-        /// <summary>Not Supported.</summary>
+        /// <summary>
+        /// Not Supported.
+        /// </summary>
         public override void SetLength(long value)
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>Not Supported.</summary>
+        /// <summary>
+        /// Not Supported.
+        /// </summary>
         public override void Write(byte[] buffer, int offset, int count)
         {
             throw new NotImplementedException();

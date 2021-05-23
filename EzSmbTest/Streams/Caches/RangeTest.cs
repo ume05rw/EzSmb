@@ -3,6 +3,9 @@ using Xunit;
 
 namespace EzSmbTest.Streams.Caches
 {
+    /// <summary>
+    /// Set Range class to public, and run.
+    /// </summary>
     public class RangeTest
     {
         [Fact]

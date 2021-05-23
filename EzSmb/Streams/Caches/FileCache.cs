@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace EzSmb.Streams.Caches
 {
-    public class FileCache : IDisposable
+    internal class FileCache : IDisposable
     {
         private List<Range> _ranges;
         private string _cachePath;
@@ -67,7 +67,7 @@ namespace EzSmb.Streams.Caches
         /// Add Range
         /// </summary>
         /// <param name="offset"></param>
-        /// <param name="end"></param>
+        /// <param name="memory"></param>
         public void Add(long offset, MemoryStream memory)
         {
             if (this.disposedValue)
@@ -136,7 +136,7 @@ namespace EzSmb.Streams.Caches
         /// Get Range-Array to be query.
         /// </summary>
         /// <param name="offset"></param>
-        /// <param name="end"></param>
+        /// <param name="count"></param>
         /// <returns></returns>
         public Range[] GetRamainings(long offset, long count)
         {
