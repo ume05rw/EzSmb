@@ -2,7 +2,9 @@ EzSmb
 ====
 
 SMB(Windows shared folder) Clinet Library powered by [TalAloni's SmbLibrary](https://github.com/TalAloni/SMBLibrary), Xamarin & .NET Core Ready.  
-  
+
+[![NuGet](https://img.shields.io/nuget/v/EzSmb.svg?label=NuGet)](https://www.nuget.org/packages/EzSmb/)
+
 ## Description
 
 It's easy to use, and supports SMB ver2 for Windows 10.  
@@ -19,7 +21,7 @@ Supports .Net Standard 2.0.
 [Add NuGet Package](https://www.nuget.org/packages/EzSmb/) to your project.
 
 ```
-> Install-Package EzSmb
+PM> Install-Package EzSmb
 ```
 
 and write code like this:
