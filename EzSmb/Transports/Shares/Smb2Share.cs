@@ -75,7 +75,7 @@ namespace EzSmb.Transports.Shares
                 foreach (FileDirectoryInformation info in infos)
                 {
                     if (
-                        info.FileAttributes == FileAttributes.Directory
+                        info.FileAttributes.HasFlag(FileAttributes.Directory)
                         && (
                             info.FileName == "."
                             || info.FileName == ".."
