@@ -15,7 +15,7 @@ namespace EzSmbTest
         }
 
         [Fact]
-        public async Task GetNodeTestServer()
+        public async Task GetNodeTestServerByIpAddress()
         {
             foreach (var setting in this.Settings)
             {
@@ -47,7 +47,39 @@ namespace EzSmbTest
         }
 
         [Fact]
-        public async Task GetNodeTestShareFolder()
+        public async Task GetNodeTestGetServerByHostName()
+        {
+            foreach (var setting in this.Settings)
+            {
+                var set = this.GetParamSet(setting);
+                var path = $"{setting.HostName}";
+                Node node;
+
+                if (setting.SupportedSmb1 || setting.SupportedSmb2)
+                {
+                    set.SmbType = null;
+                    node = await Node.GetNode(path, set);
+                    this.AssertNodeServer(node);
+                }
+
+                if (setting.SupportedSmb1)
+                {
+                    set.SmbType = SmbType.Smb1;
+                    node = await Node.GetNode(path, set);
+                    this.AssertNodeServer(node);
+                }
+
+                if (setting.SupportedSmb2)
+                {
+                    set.SmbType = SmbType.Smb2;
+                    node = await Node.GetNode(path, set);
+                    this.AssertNodeServer(node);
+                }
+            }
+        }
+
+        [Fact]
+        public async Task GetNodeTestShareFolderByIpAddress()
         {
             foreach (var setting in this.Settings)
             {
@@ -79,7 +111,39 @@ namespace EzSmbTest
         }
 
         [Fact]
-        public async Task GetNodeTestSubFolder()
+        public async Task GetNodeTestShareFolderByHostName()
+        {
+            foreach (var setting in this.Settings)
+            {
+                var set = this.GetParamSet(setting);
+                var path = $"{setting.HostName}/{setting.TestPath.Share}";
+                Node node;
+
+                if (setting.SupportedSmb1 || setting.SupportedSmb2)
+                {
+                    set.SmbType = null;
+                    node = await Node.GetNode(path, set);
+                    this.AssertNodeShareFolder(node);
+                }
+
+                if (setting.SupportedSmb1)
+                {
+                    set.SmbType = SmbType.Smb1;
+                    node = await Node.GetNode(path, set);
+                    this.AssertNodeShareFolder(node);
+                }
+
+                if (setting.SupportedSmb2)
+                {
+                    set.SmbType = SmbType.Smb2;
+                    node = await Node.GetNode(path, set);
+                    this.AssertNodeShareFolder(node);
+                }
+            }
+        }
+
+        [Fact]
+        public async Task GetNodeTestSubFolderByIpAddress()
         {
             foreach (var setting in this.Settings)
             {
@@ -111,12 +175,77 @@ namespace EzSmbTest
         }
 
         [Fact]
-        public async Task GetNodeTestFile()
+        public async Task GetNodeTestSubFolderByHostName()
+        {
+            foreach (var setting in this.Settings)
+            {
+                var set = this.GetParamSet(setting);
+                var path = $"{setting.HostName}/{setting.TestPath.Folder}";
+                Node node;
+
+                if (setting.SupportedSmb1 || setting.SupportedSmb2)
+                {
+                    set.SmbType = null;
+                    node = await Node.GetNode(path, set);
+                    this.AssertNodeSubFolder(node);
+                }
+
+                if (setting.SupportedSmb1)
+                {
+                    set.SmbType = SmbType.Smb1;
+                    node = await Node.GetNode(path, set);
+                    this.AssertNodeSubFolder(node);
+                }
+
+                if (setting.SupportedSmb2)
+                {
+                    set.SmbType = SmbType.Smb2;
+                    node = await Node.GetNode(path, set);
+                    this.AssertNodeSubFolder(node);
+                }
+            }
+        }
+
+        [Fact]
+        public async Task GetNodeTestFileByIpAddress()
         {
             foreach (var setting in this.Settings)
             {
                 var set = this.GetParamSet(setting);
                 var path = $"{setting.Address}/{setting.TestPath.File}";
+                Node node;
+
+                if (setting.SupportedSmb1 || setting.SupportedSmb2)
+                {
+                    set.SmbType = null;
+                    node = await Node.GetNode(path, set);
+                    this.AssertNodeFile(node);
+                }
+
+                if (setting.SupportedSmb1)
+                {
+                    set.SmbType = SmbType.Smb1;
+                    node = await Node.GetNode(path, set);
+                    this.AssertNodeFile(node);
+                }
+
+
+                if (setting.SupportedSmb2)
+                {
+                    set.SmbType = SmbType.Smb2;
+                    node = await Node.GetNode(path, set);
+                    this.AssertNodeFile(node);
+                }
+            }
+        }
+
+        [Fact]
+        public async Task GetNodeTestFileByHostName()
+        {
+            foreach (var setting in this.Settings)
+            {
+                var set = this.GetParamSet(setting);
+                var path = $"{setting.HostName}/{setting.TestPath.File}";
                 Node node;
 
                 if (setting.SupportedSmb1 || setting.SupportedSmb2)
