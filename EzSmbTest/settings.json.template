@@ -2,6 +2,7 @@
     {
         "mame": "SampleWithoutAuth",
         "address": "192.168.0.1",
+        "hostName": "hostname.domain.local",
         "userName": "",
         "password": "",
         "domainName": "",
@@ -37,6 +38,7 @@
     {
         "mame": "SampleWithAuth",
         "address": "192.168.0.1",
+        "hostName": "hostname.domain.local",
         "userName": "userName",
         "password": "password",
         "domainName": "domainname.local",

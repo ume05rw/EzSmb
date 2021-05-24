@@ -10,6 +10,9 @@ namespace EzSmbTest.Models
         [JsonProperty("address")]
         public string Address { get; set; }
 
+        [JsonProperty("hostName")]
+        public string HostName { get; set; }
+
         [JsonProperty("userName")]
         public string UserName { get; set; }
 
