@@ -112,7 +112,7 @@ namespace EzSmb
 
             var pathSet = PathSet.Parse(fullPath);
 
-            if (basicInfo.FileAttributes == SMBLibrary.FileAttributes.Directory)
+            if (basicInfo.FileAttributes.HasFlag(SMBLibrary.FileAttributes.Directory))
             {
                 // Folder
                 var result = NodeFactory.InnerGet(
@@ -161,7 +161,7 @@ namespace EzSmb
 
             var pathSet = PathSet.Parse($@"{parentNode.FullPath}\{info.FileName}");
 
-            if (info.FileAttributes == SMBLibrary.FileAttributes.Directory)
+            if (info.FileAttributes.HasFlag(SMBLibrary.FileAttributes.Directory))
             {
                 // Folder
                 var result = NodeFactory.InnerGet(
@@ -210,7 +210,7 @@ namespace EzSmb
 
             var pathSet = PathSet.Parse($@"{parentNode.FullPath}\{info.FileName}");
 
-            if (info.ExtFileAttributes == ExtendedFileAttributes.Directory)
+            if (info.ExtFileAttributes.HasFlag(ExtendedFileAttributes.Directory))
             {
                 // Folder
                 var result = NodeFactory.InnerGet(

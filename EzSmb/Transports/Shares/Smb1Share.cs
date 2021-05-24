@@ -90,7 +90,7 @@ namespace EzSmb.Transports.Shares
                 foreach (FindFileDirectoryInfo info in infos)
                 {
                     if (
-                        info.ExtFileAttributes == ExtendedFileAttributes.Directory
+                        info.ExtFileAttributes.HasFlag(ExtendedFileAttributes.Directory)
                         && (
                             info.FileName == "."
                             || info.FileName == ".."
