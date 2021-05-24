@@ -2,6 +2,7 @@ using EzSmb.Shareds;
 using System;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 
 namespace EzSmb.Paths
 {
@@ -26,14 +27,33 @@ namespace EzSmb.Paths
 
             try
             {
-                result.IpAddress = IPAddress.Parse(elems[0]);
+                try
+                {
+                    result.IpAddress = IPAddress.Parse(elems[0]);
+                    result.IpAddressString = elems[0];
+                }
+                catch (FormatException ex)
+                {
+                    // Fallback: check if domain was provided
+                    try
+                    {
+                        var ips = Dns.GetHostAddresses(elems[0]);
+                        result.IpAddress = ips.FirstOrDefault(x => x.AddressFamily == AddressFamily.InterNetwork) ?? ips.First();
+                        result.IpAddressString = result.IpAddress.ToString();
+                        // with the assumption that there is nothing before domain
+                        resolved = result.IpAddressString + resolved.Substring(elems[0].Length);
+                    }
+                    catch
+                    {
+                        // throw initial exception
+                        throw ex;
+                    }
+                }
             }
             catch (Exception)
             {
                 throw new ArgumentException($"First Section Requires IP-Address Format: {elems[0]}");
             }
-
-            result.IpAddressString = elems[0];
 
             if (2 <= elems.Length)
                 result.Share = elems[1];
