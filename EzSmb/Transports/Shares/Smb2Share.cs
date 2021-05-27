@@ -32,7 +32,7 @@ namespace EzSmb.Transports.Shares
             return new Smb2Handler(this.Store, path, handleType, nodeType);
         }
 
-        public override Node[] GetList(Node node)
+        public override Node[] GetList(Node node, string filter = "*")
         {
             if (!this.ValidateNode(node))
                 return null;
@@ -60,7 +60,7 @@ namespace EzSmb.Transports.Shares
                     this.Smb2Store.QueryDirectory(
                         out infos,
                         hdr.Handle,
-                        "*",
+                        filter,
                         FileInformationClass.FileDirectoryInformation
                     );
                 }

@@ -53,9 +53,10 @@ namespace EzSmb.Transports.Shares.Interfaces
         /// <summary>
         /// Get Child Node List
         /// </summary>
+        /// <param name="filter"></param>
         /// <param name="node"></param>
         /// <returns></returns>
-        Node[] GetList(Node node);
+        Node[] GetList(Node node, string filter = "*");
 
         /// <summary>
         /// Get MemoryStream of File
