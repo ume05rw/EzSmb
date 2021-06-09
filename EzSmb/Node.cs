@@ -289,7 +289,7 @@ namespace EzSmb
         /// </summary>
         /// <param name="relatedPath"></param>
         /// <returns></returns>
-        public async Task<Node[]> GetList(string relatedPath = null)
+        public async Task<Node[]> GetList(string filter="*", string relatedPath = null)
         {
             var node = await this.ResolveNode(relatedPath);
             if (node == null)
@@ -342,7 +342,7 @@ namespace EzSmb
                     {
                         using (var share = conn.GetShare())
                         {
-                            var result = share.GetList(this);
+                            var result = share.GetList(this, filter);
                             if (result == null)
                             {
                                 this.CopyErrors(share);

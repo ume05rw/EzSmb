@@ -23,7 +23,7 @@ namespace EzSmb.Transports.Shares
         {
         }
 
-        protected string FormatPath(string path, bool withSearch = false)
+        protected string FormatPath(string path, string filter = "*", bool withSearch = false)
         {
             if (!withSearch)
                 return base.FormatPath(path);
@@ -35,7 +35,7 @@ namespace EzSmb.Transports.Shares
                 + (string.IsNullOrEmpty(resolved)
                     ? string.Empty
                     : @"\")
-                + "*";
+                + filter;
         }
 
         public override IHandler GetHandler(
@@ -47,7 +47,7 @@ namespace EzSmb.Transports.Shares
             return new Smb1Handler(this.Store, path, handleType, nodeType);
         }
 
-        public override Node[] GetList(Node node)
+        public override Node[] GetList(Node node, string filter = "*")
         {
             if (!this.ValidateNode(node))
                 return null;
@@ -69,7 +69,7 @@ namespace EzSmb.Transports.Shares
                     return null;
                 }
 
-                var searchPath = this.FormatPath(node.PathSet.ElementsPath, true);
+                var searchPath = this.FormatPath(node.PathSet.ElementsPath, filter, true);
                 List<FindInformation> infos;
                 try
                 {

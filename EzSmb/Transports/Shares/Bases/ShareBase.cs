@@ -52,7 +52,7 @@ namespace EzSmb.Transports.Shares.Bases
 
 
         public abstract IHandler GetHandler(string path, HandleType handleType, NodeType nodeType);
-        public abstract Node[] GetList(Node node);
+        public abstract Node[] GetList(Node node, string filter = "*");
         protected abstract Node ExecMove(Node fromNode, Node toNode);
 
         public virtual string FormatPath(string path)
