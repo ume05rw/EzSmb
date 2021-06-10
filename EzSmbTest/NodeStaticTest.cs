@@ -84,7 +84,7 @@ namespace EzSmbTest
             foreach (var setting in this.Settings)
             {
                 var set = this.GetParamSet(setting);
-                var path = $"{setting.Address}/{setting.TestPath.Share}";
+                var path = $"{setting.Address}/{setting.TestPath.Share.Path}";
                 Node node;
 
                 if (setting.SupportedSmb1 || setting.SupportedSmb2)
@@ -116,7 +116,7 @@ namespace EzSmbTest
             foreach (var setting in this.Settings)
             {
                 var set = this.GetParamSet(setting);
-                var path = $"{setting.HostName}/{setting.TestPath.Share}";
+                var path = $"{setting.HostName}/{setting.TestPath.Share.Path}";
                 Node node;
 
                 if (setting.SupportedSmb1 || setting.SupportedSmb2)
@@ -148,7 +148,7 @@ namespace EzSmbTest
             foreach (var setting in this.Settings)
             {
                 var set = this.GetParamSet(setting);
-                var path = $"{setting.Address}/{setting.TestPath.Folder}";
+                var path = $"{setting.Address}/{setting.TestPath.Folder.Path}";
                 Node node;
 
                 if (setting.SupportedSmb1 || setting.SupportedSmb2)
@@ -180,7 +180,7 @@ namespace EzSmbTest
             foreach (var setting in this.Settings)
             {
                 var set = this.GetParamSet(setting);
-                var path = $"{setting.HostName}/{setting.TestPath.Folder}";
+                var path = $"{setting.HostName}/{setting.TestPath.Folder.Path}";
                 Node node;
 
                 if (setting.SupportedSmb1 || setting.SupportedSmb2)
@@ -212,7 +212,7 @@ namespace EzSmbTest
             foreach (var setting in this.Settings)
             {
                 var set = this.GetParamSet(setting);
-                var path = $"{setting.Address}/{setting.TestPath.File}";
+                var path = $"{setting.Address}/{setting.TestPath.File.Path}";
                 Node node;
 
                 if (setting.SupportedSmb1 || setting.SupportedSmb2)
@@ -245,7 +245,7 @@ namespace EzSmbTest
             foreach (var setting in this.Settings)
             {
                 var set = this.GetParamSet(setting);
-                var path = $"{setting.HostName}/{setting.TestPath.File}";
+                var path = $"{setting.HostName}/{setting.TestPath.File.Path}";
                 Node node;
 
                 if (setting.SupportedSmb1 || setting.SupportedSmb2)

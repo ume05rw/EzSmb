@@ -110,6 +110,128 @@ namespace EzSmbTest.Bases
                 this.AssertNodeSubFolder(node.GetParent());
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:メンバーを static に設定します", Justification = "<保留中>")]
+        protected void AssertSameNode(Node node1, Node node2)
+        {
+            Assert.Equal(node1.Type, node2.Type);
+            Assert.Equal(node1.Name, node2.Name);
+            Assert.Equal(node1.FullPath, node2.FullPath);
+
+            if (node1.Created != null)
+                Assert.Equal(node1.Created, node2.Created);
+            if (node1.Updated != null)
+                Assert.Equal(node1.Updated, node2.Updated);
+            if (node1.LastAccessed != null)
+                Assert.Equal(node1.LastAccessed, node2.LastAccessed);
+            if (node1.Size != null)
+                Assert.Equal(node1.Size, node2.Size);
+        }
+
+
+
+        protected async Task AssertNodeItem(Node node, Item item)
+        {
+            if (!item.ExistsPath)
+            {
+                Assert.Null(node);
+
+                return;
+            }
+
+            switch (item.Type)
+            {
+                case ItemType.Server:
+                    {
+                        this.AssertNodeServer(node);
+                        Assert.Equal(item.Name, node.Name);
+
+                        await this.AssertGetList(node);
+
+                        if (0 <= item.ItemCount)
+                        {
+                            var subNodes = await node.GetList();
+                            Assert.Equal(item.ItemCount, subNodes.Length);
+                        }
+
+                        if (0 <= item.FilteredItemCount)
+                        {
+                            var filteredString = item.Filter.Trim('*').ToLowerInvariant();
+                            var subNodes = await node.GetList(item.Filter);
+                            Assert.Equal(item.FilteredItemCount, subNodes.Length);
+
+                            foreach (var subNode in subNodes)
+                            {
+                                this.AssertNode(subNode);
+                                Assert.True(0 <= subNode.Name.ToLowerInvariant().IndexOf(filteredString));
+                            }
+                        }
+
+                        break;
+                    }
+                case ItemType.Share:
+                    {
+                        this.AssertNodeShareFolder(node);
+                        Assert.Equal(item.Name, node.Name);
+
+                        await this.AssertGetList(node);
+
+                        if (0 <= item.ItemCount)
+                        {
+                            var subNodes = await node.GetList();
+                            Assert.Equal(item.ItemCount, subNodes.Length);
+                        }
+
+                        if (0 <= item.FilteredItemCount)
+                        {
+                            var filteredString = item.Filter.Trim('*').ToLowerInvariant();
+                            var subNodes = await node.GetList(item.Filter);
+                            Assert.Equal(item.FilteredItemCount, subNodes.Length);
+
+                            foreach (var subNode in subNodes)
+                            {
+                                this.AssertNode(subNode);
+                                Assert.True(0 <= subNode.Name.ToLowerInvariant().IndexOf(filteredString));
+                            }
+                        }
+                        break;
+                    }
+                case ItemType.Foder:
+                    {
+                        this.AssertNodeSubFolder(node);
+                        Assert.Equal(item.Name, node.Name);
+
+                        await this.AssertGetList(node);
+
+                        if (0 <= item.ItemCount)
+                        {
+                            var subNodes = await node.GetList();
+                            Assert.Equal(item.ItemCount, subNodes.Length);
+                        }
+
+                        if (0 <= item.FilteredItemCount)
+                        {
+                            var filteredString = item.Filter.Trim('*').ToLowerInvariant();
+                            var subNodes = await node.GetList(item.Filter);
+                            Assert.Equal(item.FilteredItemCount, subNodes.Length);
+
+                            foreach (var subNode in subNodes)
+                            {
+                                this.AssertNode(subNode);
+                                Assert.True(0 <= subNode.Name.ToLowerInvariant().IndexOf(filteredString));
+                            }
+                        }
+                        break;
+                    }
+                case ItemType.File:
+                    {
+                        this.AssertNodeFile(node);
+                        Assert.Equal(item.Name, node.Name);
+                        break;
+                    }
+            }
+        }
+
+
         protected async Task AssertGetList(Node node)
         {
             Assert.True(node.Type == NodeType.Server || node.Type == NodeType.Folder);
@@ -120,34 +242,6 @@ namespace EzSmbTest.Bases
 
             foreach (var subNode in subNodes)
                 this.AssertNode(subNode);
-        }
-
-        protected async Task AssertRelatedServer(Node node, Related related)
-        {
-            var relNode = await node.GetNode(related.Path);
-            this.AssertNodeServer(relNode);
-            Assert.Equal(related.Name, relNode.Name);
-        }
-
-        protected async Task AssertRelatedShareFolder(Node node, Related related)
-        {
-            var relNode = await node.GetNode(related.Path);
-            this.AssertNodeShareFolder(relNode);
-            Assert.Equal(related.Name, relNode.Name);
-        }
-
-        protected async Task AssertRelatedSubFolder(Node node, Related related)
-        {
-            var relNode = await node.GetNode(related.Path);
-            this.AssertNodeSubFolder(relNode);
-            Assert.Equal(related.Name, relNode.Name);
-        }
-
-        protected async Task AssertRelatedFile(Node node, Related related)
-        {
-            var relNode = await node.GetNode(related.Path);
-            this.AssertNodeFile(relNode);
-            Assert.Equal(related.Name, relNode.Name);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:メンバーを static に設定します", Justification = "<保留中>")]

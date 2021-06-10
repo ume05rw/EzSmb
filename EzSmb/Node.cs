@@ -287,9 +287,13 @@ namespace EzSmb
         /// <summary>
         /// Get Child Nodes.
         /// </summary>
+        /// <param name="filter"></param>
         /// <param name="relatedPath"></param>
         /// <returns></returns>
-        public async Task<Node[]> GetList(string filter="*", string relatedPath = null)
+        /// <remarks>
+        /// Node: SMB1 does not support start-with match filter. If you find out how, please let me know!
+        /// </remarks>
+        public async Task<Node[]> GetList(string filter = "*", string relatedPath = null)
         {
             var node = await this.ResolveNode(relatedPath);
             if (node == null)

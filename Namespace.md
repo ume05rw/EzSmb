@@ -21,7 +21,7 @@ EzSmb
   |     |
   |     +-- Node GetParent()
   |     +-- Task<Node> GetNode(string relatedPath)
-  |     +-- Task<Node[]> GetList(string relatedPath = null)
+  |     +-- Task<Node[]> GetList(string filter = "*", string relatedPath = null)
   |     +-- ReaderStream GetReaderStream()
   |     +-- Task<ReaderStream> GetStream(string relatedPath)
   |     +-- Task<MemoryStream> Read(string relatedPath = null)

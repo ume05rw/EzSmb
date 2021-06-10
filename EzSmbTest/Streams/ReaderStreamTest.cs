@@ -26,7 +26,7 @@ namespace EzSmbTest.Streams
         /// <returns></returns>
         private async Task<Node> GetNode(Setting setting, ParamSet set)
         {
-            var path = $@"{setting.Address}\{setting.TestPath.File}";
+            var path = $@"{setting.Address}\{setting.TestPath.File.Path}";
             var node = await Node.GetNode(path, set);
 
             if (set.SmbType == null)
@@ -206,7 +206,7 @@ namespace EzSmbTest.Streams
             foreach (var setting in this.Settings)
             {
                 var set = this.GetParamSet(setting);
-                var path = $"{setting.Address}/{setting.TestPath.File}";
+                var path = $"{setting.Address}/{setting.TestPath.File.Path}";
                 Node node;
 
                 set.SmbType = null;

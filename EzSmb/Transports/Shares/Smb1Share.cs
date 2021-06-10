@@ -49,6 +49,10 @@ namespace EzSmb.Transports.Shares
 
         public override Node[] GetList(Node node, string filter = "*")
         {
+            var formattedFilter = string.IsNullOrEmpty(filter)
+                ? "*"
+                : filter;
+
             if (!this.ValidateNode(node))
                 return null;
 
@@ -69,7 +73,7 @@ namespace EzSmb.Transports.Shares
                     return null;
                 }
 
-                var searchPath = this.FormatPath(node.PathSet.ElementsPath, filter, true);
+                var searchPath = this.FormatPath(node.PathSet.ElementsPath, formattedFilter, true);
                 List<FindInformation> infos;
                 try
                 {
@@ -85,6 +89,9 @@ namespace EzSmb.Transports.Shares
 
                     return null;
                 }
+
+                if (infos == null)
+                    return Array.Empty<Node>();
 
                 var list = new List<Node>();
                 foreach (FindFileDirectoryInfo info in infos)
