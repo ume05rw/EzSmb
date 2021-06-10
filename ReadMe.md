@@ -91,7 +91,7 @@ Node.GetList(string filter = "*", string relatedPath = null)
 [synmra](https://github.com/synmra)
 
 
-\#What did I do wrong operation? synmra was not added to contributors...
+\#What did I do wrong operation? synmra was not added to sidebar...
 
 ## Links
 
