@@ -114,8 +114,12 @@
             <summary>
             Get Child Nodes.
             </summary>
+            <param name="filter"></param>
             <param name="relatedPath"></param>
             <returns></returns>
+            <remarks>
+            Node: SMB1 does not support start-with match filter. If you find out how, please let me know!
+            </remarks>
         </member>
         <member name="M:EzSmb.Node.Read(System.String)">
             <summary>
