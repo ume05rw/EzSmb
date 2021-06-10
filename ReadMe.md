@@ -71,6 +71,15 @@ and more:
 Class Tree: [Namespace.md](https://github.com/ume05rw/EzSmb/blob/master/Namespace.md)
 
 
+## Breaking changes:
+
+The first argument of Node.GetList method has been changed since version 1.3.
+
+```csharp
+Node.GetList(string filter = "*", string relatedPath = null)
+//           ^^ Inserted          ^^ move to second arg
+```
+
 ## Licence
 [LGPL v3 Licence](https://github.com/ume05rw/EzSmb/blob/master/License.txt)
 

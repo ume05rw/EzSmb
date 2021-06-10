@@ -35,44 +35,46 @@ namespace EzSmbTest.Models
     public class TestPath
     {
         [JsonProperty("share")]
-        public string Share { get; set; }
+        public Item Share { get; set; }
 
         [JsonProperty("folder")]
-        public string Folder { get; set; }
+        public Item Folder { get; set; }
 
         [JsonProperty("file")]
-        public string File { get; set; }
+        public Item File { get; set; }
 
 
         [JsonProperty("failShare")]
-        public string FailShare { get; set; }
+        public Item FailShare { get; set; }
 
         [JsonProperty("failFolder")]
-        public string FailFolder { get; set; }
+        public Item FailFolder { get; set; }
 
         [JsonProperty("failFile")]
-        public string FailFile { get; set; }
+        public Item FailFile { get; set; }
 
 
         [JsonProperty("relatedServer")]
-        public Related RelatedServer { get; set; }
+        public Item RelatedServer { get; set; }
 
         [JsonProperty("relatedShare")]
-        public Related RelatedShare { get; set; }
+        public Item RelatedShare { get; set; }
 
         [JsonProperty("relatedFolder")]
-        public Related RelatedFolder { get; set; }
+        public Item RelatedFolder { get; set; }
 
         [JsonProperty("relatedFile")]
-        public Related RelatedFile { get; set; }
+        public Item RelatedFile { get; set; }
     }
 
-    public class Related
-    {
-        [JsonProperty("path")]
-        public string Path { get; set; }
 
-        [JsonProperty("name")]
-        public string Name { get; set; }
-    }
+
+    //public class Related
+    //{
+    //    [JsonProperty("path")]
+    //    public string Path { get; set; }
+
+    //    [JsonProperty("name")]
+    //    public string Name { get; set; }
+    //}
 }

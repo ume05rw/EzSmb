@@ -9,65 +9,105 @@
         "supportedSmb1": true,
         "supportedSmb2": true,
         "testPath": {
-            "share": "ShareEveryone",
-            "folder": "ShareEveryone/SubFolder",
-            "file": "ShareEveryone/SubFolder/test.txt",
-
-            "failShare": "NoSuchShare",
-            "failFolder": "ShareEveryone/NoSuchFolder",
-            "failFile": "ShareEveryone/SubFolder/NoSuchFile.txt",
+            "share": {
+                "type": "share",
+                "path": "ShareEveryone",
+                "name": "ShareEveryone",
+                "existsPath": true,
+                "itemCount": 1,
+                "filter": null,
+                "filteredItemCount": -1,
+                "relatedServer": "../",
+                "relatedShare": "../ShareEveryone2",
+                "relatedFolder": "FolderEveryone",
+                "relatedFile": "FolderEveryone/FileEveryone.txt"
+            },
+            "folder": {
+                "type": "folder",
+                "path": "ShareEveryone/SubFolder",
+                "name": "SubFolder",
+                "existsPath": true,
+                "itemCount": 1,
+                "filter": null,
+                "filteredItemCount": -1,
+                "relatedServer": "../../",
+                "relatedShare": "../../ShareEveryone2",
+                "relatedFolder": "../FolderEveryone",
+                "relatedFile": "../FolderEveryone/FileEveryone.txt"
+            },
+            "file": {
+                "type": "file",
+                "path": "ShareEveryone/SubFolder/test.txt",
+                "name": "test.txt",
+                "existsPath": true,
+                "itemCount": -1,
+                "filter": null,
+                "filteredItemCount": -1,
+                "relatedServer": "../../../",
+                "relatedShare": "../../../ShareEveryone2",
+                "relatedFolder": "../../FolderEveryone",
+                "relatedFile": "../../FolderEveryone/FileEveryone.txt"
+            },
+            "failShare": {
+                "type": "share",
+                "path": "NoSuchShare",
+                "existsPath": false,
+                "itemCount": -1,
+                "filter": null,
+                "filteredItemCount": -1
+            },
+            "failFolder": {
+                "type": "folder",
+                "path": "ShareEveryone/NoSuchFolder",
+                "existsPath": false,
+                "itemCount": -1,
+                "filter": null,
+                "filteredItemCount": -1
+            },
+            "failFile": {
+                "type": "file",
+                "path": "ShareEveryone/SubFolder/NoSuchFile.txt",
+                "existsPath": false,
+                "itemCount": -1,
+                "filter": null,
+                "filteredItemCount": -1
+            },
 
             "relatedServer": {
+                "type": "server",
                 "path": "ShareEveryone/SubFolder/../../",
-                "name": "192.168.0.1"
+                "name": "192.168.0.1",
+                "existsPath": true,
+                "itemCount": -1,
+                "filter": null,
+                "filteredItemCount": -1
             },
             "relatedShare": {
+                "type": "share",
                 "path": "ShareEveryone/SubFolder/../",
-                "name": "ShareEveryone"
+                "name": "ShareEveryone",
+                "existsPath": true,
+                "itemCount": -1,
+                "filter": null,
+                "filteredItemCount": -1
             },
             "relatedFolder": {
+                "type": "folder",
                 "path": "ShareEveryone/SubFolder/test.txt/..",
-                "name": "SubFolder"
+                "name": "SubFolder",
+                "existsPath": true,
+                "itemCount": -1,
+                "filter": null,
+                "filteredItemCount": -1
             },
             "relatedFile": {
+                "type": "file",
                 "path": "ShareEveryone/SubFolder/test.txt/../test.txt",
-                "name": "test.txt"
-            }
-        }
-    },
-    {
-        "mame": "SampleWithAuth",
-        "address": "192.168.0.1",
-        "hostName": "hostname.domain.local",
-        "userName": "userName",
-        "password": "password",
-        "domainName": "domainname.local",
-        "supportedSmb1": true,
-        "supportedSmb2": true,
-        "testPath": {
-            "share": "ShareLimited",
-            "folder": "ShareLimited/SubFolder",
-            "file": "ShareLimited/SubFolder/test.txt",
-
-            "failShare": "NoSuchShare",
-            "failFolder": "ShareLimited/NoSuchFolder",
-            "failFile": "ShareLimited/SubFolder/NoSuchFile.txt",
-
-            "relatedServer": {
-                "path": "ShareLimited/SubFolder/../../",
-                "name": "192.168.0.1"
-            },
-            "relatedShare": {
-                "path": "ShareLimited/SubFolder/../",
-                "name": "ShareLimited"
-            },
-            "relatedFolder": {
-                "path": "ShareLimited/SubFolder/test.txt/..",
-                "name": "SubFolder"
-            },
-            "relatedFile": {
-                "path": "ShareLimited/SubFolder/test.txt/../test.txt",
-                "name": "test.txt"
+                "name": "test.txt",
+                "existsPath": true,
+                "itemCount": -1,
+                "filter": null,
+                "filteredItemCount": -1
             }
         }
     }

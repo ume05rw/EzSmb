@@ -34,6 +34,10 @@ namespace EzSmb.Transports.Shares
 
         public override Node[] GetList(Node node, string filter = "*")
         {
+            var formattedFilter = string.IsNullOrEmpty(filter)
+                ? "*"
+                : filter;
+
             if (!this.ValidateNode(node))
                 return null;
 
@@ -60,7 +64,7 @@ namespace EzSmb.Transports.Shares
                     this.Smb2Store.QueryDirectory(
                         out infos,
                         hdr.Handle,
-                        filter,
+                        formattedFilter,
                         FileInformationClass.FileDirectoryInformation
                     );
                 }
@@ -70,6 +74,9 @@ namespace EzSmb.Transports.Shares
 
                     return null;
                 }
+
+                if (infos == null)
+                    return Array.Empty<Node>();
 
                 var list = new List<Node>();
                 foreach (FileDirectoryInformation info in infos)

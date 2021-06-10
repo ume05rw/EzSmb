@@ -110,7 +110,7 @@
             <param name="relatedPath"></param>
             <returns></returns>
         </member>
-        <member name="M:EzSmb.Node.GetList(System.String)">
+        <member name="M:EzSmb.Node.GetList(System.String,System.String)">
             <summary>
             Get Child Nodes.
             </summary>
@@ -745,10 +745,11 @@
             <param name="paramSet"></param>
             <returns></returns>
         </member>
-        <member name="M:EzSmb.Transports.Shares.Interfaces.IShare.GetList(EzSmb.Node)">
+        <member name="M:EzSmb.Transports.Shares.Interfaces.IShare.GetList(EzSmb.Node,System.String)">
             <summary>
             Get Child Node List
             </summary>
+            <param name="filter"></param>
             <param name="node"></param>
             <returns></returns>
         </member>

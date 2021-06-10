@@ -26,7 +26,7 @@ namespace EzSmbTest
         /// <returns></returns>
         private async Task<Node> GetNode(Setting setting, ParamSet set)
         {
-            var path = $@"{setting.Address}\{setting.TestPath.File}";
+            var path = $@"{setting.Address}\{setting.TestPath.File.Path}";
             var node = await Node.GetNode(path, set);
 
             if (set.SmbType == null)
@@ -53,6 +53,147 @@ namespace EzSmbTest
 
             return node;
         }
+
+        [Fact]
+        public async Task GetNodeTestRelatedServer()
+        {
+            foreach (var setting in this.Settings)
+            {
+                var relatedPath = setting.TestPath.File.RelatedServer;
+                if (string.IsNullOrEmpty(relatedPath))
+                    continue;
+
+                var set = this.GetParamSet(setting);
+                Node node;
+
+                if (setting.SupportedSmb1 || setting.SupportedSmb2)
+                {
+                    set.SmbType = null;
+                    node = await this.GetNode(setting, set);
+                    this.AssertNodeServer(await node.GetNode(relatedPath));
+                }
+
+                if (setting.SupportedSmb1)
+                {
+                    set.SmbType = SmbType.Smb1;
+                    node = await this.GetNode(setting, set);
+                    this.AssertNodeServer(await node.GetNode(relatedPath));
+                }
+
+                if (setting.SupportedSmb2)
+                {
+                    set.SmbType = SmbType.Smb2;
+                    node = await this.GetNode(setting, set);
+                    this.AssertNodeServer(await node.GetNode(relatedPath));
+                }
+            }
+        }
+
+        [Fact]
+        public async Task GetNodeTestRelatedShare()
+        {
+            foreach (var setting in this.Settings)
+            {
+                var relatedPath = setting.TestPath.File.RelatedShare;
+                if (string.IsNullOrEmpty(relatedPath))
+                    continue;
+
+                var set = this.GetParamSet(setting);
+                Node node;
+
+                if (setting.SupportedSmb1 || setting.SupportedSmb2)
+                {
+                    set.SmbType = null;
+                    node = await this.GetNode(setting, set);
+                    this.AssertNodeShareFolder(await node.GetNode(relatedPath));
+                }
+
+                if (setting.SupportedSmb1)
+                {
+                    set.SmbType = SmbType.Smb1;
+                    node = await this.GetNode(setting, set);
+                    this.AssertNodeShareFolder(await node.GetNode(relatedPath));
+                }
+
+                if (setting.SupportedSmb2)
+                {
+                    set.SmbType = SmbType.Smb2;
+                    node = await this.GetNode(setting, set);
+                    this.AssertNodeShareFolder(await node.GetNode(relatedPath));
+                }
+            }
+        }
+
+        [Fact]
+        public async Task GetNodeTestRelatedFolder()
+        {
+            foreach (var setting in this.Settings)
+            {
+                var relatedPath = setting.TestPath.File.RelatedFolder;
+                if (string.IsNullOrEmpty(relatedPath))
+                    continue;
+
+                var set = this.GetParamSet(setting);
+                Node node;
+
+                if (setting.SupportedSmb1 || setting.SupportedSmb2)
+                {
+                    set.SmbType = null;
+                    node = await this.GetNode(setting, set);
+                    this.AssertNodeSubFolder(await node.GetNode(relatedPath));
+                }
+
+                if (setting.SupportedSmb1)
+                {
+                    set.SmbType = SmbType.Smb1;
+                    node = await this.GetNode(setting, set);
+                    this.AssertNodeSubFolder(await node.GetNode(relatedPath));
+                }
+
+                if (setting.SupportedSmb2)
+                {
+                    set.SmbType = SmbType.Smb2;
+                    node = await this.GetNode(setting, set);
+                    this.AssertNodeSubFolder(await node.GetNode(relatedPath));
+                }
+            }
+        }
+
+        [Fact]
+        public async Task GetNodeTestRelatedFile()
+        {
+            foreach (var setting in this.Settings)
+            {
+                var relatedPath = setting.TestPath.File.RelatedFile;
+                if (string.IsNullOrEmpty(relatedPath))
+                    continue;
+
+                var set = this.GetParamSet(setting);
+                Node node;
+
+                if (setting.SupportedSmb1 || setting.SupportedSmb2)
+                {
+                    set.SmbType = null;
+                    node = await this.GetNode(setting, set);
+                    this.AssertNodeFile(await node.GetNode(relatedPath));
+                }
+
+                if (setting.SupportedSmb1)
+                {
+                    set.SmbType = SmbType.Smb1;
+                    node = await this.GetNode(setting, set);
+                    this.AssertNodeFile(await node.GetNode(relatedPath));
+                }
+
+                if (setting.SupportedSmb2)
+                {
+                    set.SmbType = SmbType.Smb2;
+                    node = await this.GetNode(setting, set);
+                    this.AssertNodeFile(await node.GetNode(relatedPath));
+                }
+            }
+        }
+
 
         [Fact]
         public async Task GetListFailTest()
