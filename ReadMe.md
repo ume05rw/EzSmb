@@ -86,6 +86,13 @@ Node.GetList(string filter = "*", string relatedPath = null)
 ## Author
 [Do-Be's](http://dobes.jp)
 
+## Contributors
+[upcu](https://github.com/upcu)  
+[synmra](https://github.com/synmra)
+
+
+\#What did I do wrong operation? synmra was not added to contributors...
+
 ## Links
 
 GitHub - TalAloni/SMBLibrary: SMB client & server implements.  
