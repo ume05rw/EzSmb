@@ -701,7 +701,7 @@ namespace EzSmb
         /// <remarks>
         /// Stream is Read Only.
         /// </remarks>
-        public async Task<ReaderStream> GetStream(string relatedPath)
+        public async Task<ReaderStream> GetReaderStream(string relatedPath)
         {
             var node = await this.ResolveNode(relatedPath);
             if (node == null)

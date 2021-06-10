@@ -176,7 +176,7 @@
             Stream is Read Only.
             </remarks>
         </member>
-        <member name="M:EzSmb.Node.GetStream(System.String)">
+        <member name="M:EzSmb.Node.GetReaderStream(System.String)">
             <summary>
             Get Stream.
             </summary>

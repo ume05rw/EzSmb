@@ -23,7 +23,7 @@ EzSmb
   |     +-- Task<Node> GetNode(string relatedPath)
   |     +-- Task<Node[]> GetList(string filter = "*", string relatedPath = null)
   |     +-- ReaderStream GetReaderStream()
-  |     +-- Task<ReaderStream> GetStream(string relatedPath)
+  |     +-- Task<ReaderStream> GetReaderStream(string relatedPath)
   |     +-- Task<MemoryStream> Read(string relatedPath = null)
   |     +-- Task<bool> Write(Stream stream, string relatedPath = null)
   |     +-- Task<Node> CreateFolder(string folderName, string relatedPath = null)

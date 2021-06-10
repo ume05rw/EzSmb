@@ -156,7 +156,7 @@ namespace EzSmbTest.Streams
                     {
                         node = await this.GetServerNode(setting, set);
                         using var readed = await node.Read(setting.TestPath.RelatedFile.Path);
-                        using var stream = await node.GetStream(setting.TestPath.RelatedFile.Path);
+                        using var stream = await node.GetReaderStream(setting.TestPath.RelatedFile.Path);
                         this.InnerCreateTest(stream, readed);
                     }
                     catch (Exception ex)
@@ -173,7 +173,7 @@ namespace EzSmbTest.Streams
                     {
                         node = await this.GetServerNode(setting, set);
                         using var readed = await node.Read(setting.TestPath.RelatedFile.Path);
-                        using var stream = await node.GetStream(setting.TestPath.RelatedFile.Path);
+                        using var stream = await node.GetReaderStream(setting.TestPath.RelatedFile.Path);
                         this.InnerCreateTest(stream, readed);
                     }
                     catch (Exception ex)
@@ -189,7 +189,7 @@ namespace EzSmbTest.Streams
                     {
                         node = await this.GetServerNode(setting, set);
                         using var readed = await node.Read(setting.TestPath.RelatedFile.Path);
-                        using var stream = await node.GetStream(setting.TestPath.RelatedFile.Path);
+                        using var stream = await node.GetReaderStream(setting.TestPath.RelatedFile.Path);
                         this.InnerCreateTest(stream, readed);
                     }
                     catch (Exception ex)
