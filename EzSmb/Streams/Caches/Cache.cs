@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace EzSmb.Streams.Caches
 {
-    public class Cache : IDisposable
+    internal class Cache : IDisposable
     {
         private List<Range> _ranges;
         private MemoryStream _cacheStream;
