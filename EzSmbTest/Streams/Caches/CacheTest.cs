@@ -9,12 +9,15 @@ namespace EzSmbTest.Streams.Caches
     /// <summary>
     /// Set FileCache class to public, and run.
     /// </summary>
-    public class FileCacheTest
+    /// <remarks>
+    /// テスト時は、Cache, CacheSet, Range を internal -> public に変更のこと。
+    /// </remarks>
+    public class CacheTest
     {
         [Fact]
         public void WriteReadTest()
         {
-            using (var set = new FileCache())
+            using (var set = new Cache())
             {
                 var stream1 = new MemoryStream(Encoding.UTF8.GetBytes("hello?"));
                 var stream2 = new MemoryStream(Encoding.UTF8.GetBytes("are you ok?"));
@@ -36,7 +39,7 @@ namespace EzSmbTest.Streams.Caches
                 Assert.Equal("hello?are you ok?write and read!", text);
             }
 
-            using (var set = new FileCache())
+            using (var set = new Cache())
             {
                 var stream1 = new MemoryStream(Encoding.UTF8.GetBytes("hello?"));
                 var stream2 = new MemoryStream(Encoding.UTF8.GetBytes("are you ok?"));
@@ -86,7 +89,7 @@ namespace EzSmbTest.Streams.Caches
         [Fact]
         public void MergeNotMergedTest()
         {
-            using (var set = new FileCache())
+            using (var set = new Cache())
             {
                 set.Add(10, new MemoryStream(new byte[11]));
                 set.Add(30, new MemoryStream(new byte[11]));
@@ -104,7 +107,7 @@ namespace EzSmbTest.Streams.Caches
                 }
             }
 
-            using (var set = new FileCache())
+            using (var set = new Cache())
             {
                 set.Add(50, new MemoryStream(new byte[11]));
                 set.Add(30, new MemoryStream(new byte[11]));
@@ -122,7 +125,7 @@ namespace EzSmbTest.Streams.Caches
                 }
             }
 
-            using (var set = new FileCache())
+            using (var set = new Cache())
             {
                 set.Add(30, new MemoryStream(new byte[11]));
                 set.Add(50, new MemoryStream(new byte[11]));
@@ -144,7 +147,7 @@ namespace EzSmbTest.Streams.Caches
         [Fact]
         public void MergeToOneTest()
         {
-            using (var set = new FileCache())
+            using (var set = new Cache())
             {
                 set.Add(10, new MemoryStream(new byte[11]));
                 set.Add(15, new MemoryStream(new byte[16]));
@@ -156,7 +159,7 @@ namespace EzSmbTest.Streams.Caches
                 Assert.Equal(31, ranges.First().Count);
             }
 
-            using (var set = new FileCache())
+            using (var set = new Cache())
             {
                 set.Add(25, new MemoryStream(new byte[16]));
                 set.Add(15, new MemoryStream(new byte[16]));
@@ -168,7 +171,7 @@ namespace EzSmbTest.Streams.Caches
                 Assert.Equal(31, ranges.First().Count);
             }
 
-            using (var set = new FileCache())
+            using (var set = new Cache())
             {
                 set.Add(25, new MemoryStream(new byte[16]));
                 set.Add(15, new MemoryStream(new byte[16]));
@@ -181,7 +184,7 @@ namespace EzSmbTest.Streams.Caches
                 Assert.Equal(101, ranges.First().Count);
             }
 
-            using (var set = new FileCache())
+            using (var set = new Cache())
             {
                 set.Add(0, new MemoryStream(new byte[101]));
                 set.Add(25, new MemoryStream(new byte[16]));
@@ -194,7 +197,7 @@ namespace EzSmbTest.Streams.Caches
                 Assert.Equal(101, ranges.First().Count);
             }
 
-            using (var set = new FileCache())
+            using (var set = new Cache())
             {
                 set.Add(10, new MemoryStream(new byte[11]));
                 set.Add(30, new MemoryStream(new byte[11]));
@@ -207,7 +210,7 @@ namespace EzSmbTest.Streams.Caches
                 Assert.Equal(101, ranges.First().Count);
             }
 
-            using (var set = new FileCache())
+            using (var set = new Cache())
             {
                 set.Add(10, new MemoryStream(new byte[11]));
                 set.Add(21, new MemoryStream(new byte[10]));
@@ -219,7 +222,7 @@ namespace EzSmbTest.Streams.Caches
                 Assert.Equal(31, ranges.First().Count);
             }
 
-            using (var set = new FileCache())
+            using (var set = new Cache())
             {
                 set.Add(31, new MemoryStream(new byte[10]));
                 set.Add(21, new MemoryStream(new byte[10]));
@@ -231,7 +234,7 @@ namespace EzSmbTest.Streams.Caches
                 Assert.Equal(31, ranges.First().Count);
             }
 
-            using (var set = new FileCache())
+            using (var set = new Cache())
             {
                 set.Add(10, new MemoryStream(new byte[11]));
                 set.Add(31, new MemoryStream(new byte[10]));
@@ -243,7 +246,7 @@ namespace EzSmbTest.Streams.Caches
                 Assert.Equal(31, ranges.First().Count);
             }
 
-            using (var set = new FileCache())
+            using (var set = new Cache())
             {
                 set.Add(21, new MemoryStream(new byte[10]));
                 set.Add(10, new MemoryStream(new byte[11]));
@@ -259,7 +262,7 @@ namespace EzSmbTest.Streams.Caches
         [Fact]
         public void MergeToMultiTest()
         {
-            using (var set = new FileCache())
+            using (var set = new Cache())
             {
                 set.Add(10, new MemoryStream(new byte[11]));
                 set.Add(21, new MemoryStream(new byte[10]));
@@ -278,7 +281,7 @@ namespace EzSmbTest.Streams.Caches
                 Assert.Equal(31, ranges.Last().Count);
             }
 
-            using (var set = new FileCache())
+            using (var set = new Cache())
             {
                 set.Add(21, new MemoryStream(new byte[10]));
                 set.Add(10, new MemoryStream(new byte[11]));
@@ -301,7 +304,7 @@ namespace EzSmbTest.Streams.Caches
         [Fact]
         public void GetRamainingsTest()
         {
-            using (var set = new FileCache())
+            using (var set = new Cache())
             {
                 set.Add(10, new MemoryStream(new byte[11]));
                 set.Add(30, new MemoryStream(new byte[11]));
@@ -331,7 +334,7 @@ namespace EzSmbTest.Streams.Caches
                 Assert.Equal(20, rems[4].Count);
             }
 
-            using (var set = new FileCache())
+            using (var set = new Cache())
             {
                 set.Add(70, new MemoryStream(new byte[11]));
                 set.Add(50, new MemoryStream(new byte[11]));
@@ -352,7 +355,7 @@ namespace EzSmbTest.Streams.Caches
                 Assert.Equal(100, rems[4].End);
             }
 
-            using (var set = new FileCache())
+            using (var set = new Cache())
             {
                 set.Add(10, new MemoryStream(new byte[11]));
                 set.Add(30, new MemoryStream(new byte[11]));

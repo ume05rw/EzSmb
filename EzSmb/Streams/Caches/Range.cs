@@ -1,6 +1,6 @@
 namespace EzSmb.Streams.Caches
 {
-    internal class Range
+    public class Range
     {
         public long Start { get; internal set; }
         public long End { get; internal set; }

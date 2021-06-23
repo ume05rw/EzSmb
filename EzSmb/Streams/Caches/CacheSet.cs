@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace EzSmb.Streams.Caches
 {
-    internal class CacheSet : IDisposable
+    public class CacheSet : IDisposable
     {
         private bool disposedValue;
 

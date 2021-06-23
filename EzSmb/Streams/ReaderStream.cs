@@ -31,8 +31,8 @@ namespace EzSmb.Streams
         private IShare _share;
         private long _position;
         private long _length;
-        private bool _isUseFileCache;
-        private FileCache _cache;
+        private bool _isUseCache;
+        private Cache _cache;
         private Locker _locker;
 
         /// <summary>
@@ -78,28 +78,29 @@ namespace EzSmb.Streams
         }
 
         /// <summary>
-        /// Cache all responses of in a temp file.
+        /// Cache all responses of in a MemoryStream.
         /// </summary>
         /// <remarks>
         /// Default: false
         ///
-        /// Write all the data to a file once this stream get it.
-        /// The cache file will be deleted when it's disposed.
+        /// It caches the data once retrieved, and returns
+        /// the data from the cache when it is retrieved again.
+        /// The cache will be clear when it's disposed.
         /// </remarks>
-        public bool IsUseFileCache
+        public bool IsUseCache
         {
-            get => this._isUseFileCache;
+            get => this._isUseCache;
             set
             {
-                var changed = (this._isUseFileCache != value);
-                this._isUseFileCache = value;
+                var changed = (this._isUseCache != value);
+                this._isUseCache = value;
 
                 if (!changed)
                     return;
 
-                if (this._isUseFileCache)
+                if (this._isUseCache)
                 {
-                    this._cache = new FileCache();
+                    this._cache = new Cache();
                 }
                 else
                 {
@@ -156,7 +157,7 @@ namespace EzSmb.Streams
             this._elementPath = this._share.FormatPath(node.PathSet.ElementsPath);
             this._length = (long)node.Size;
             this._position = 0;
-            this._isUseFileCache = false;
+            this._isUseCache = false;
             this.ReadTimeout = 0;
         }
 
@@ -253,7 +254,7 @@ namespace EzSmb.Streams
 
             return this._locker.LockedInvoke<int>(() =>
             {
-                if (this.IsUseFileCache)
+                if (this.IsUseCache)
                 {
                     long initialPosition = this._position;
 
@@ -423,7 +424,7 @@ namespace EzSmb.Streams
                     this._position += data.Length;
                 }
 
-                if (exception == null && this.IsUseFileCache)
+                if (exception == null && this.IsUseCache)
                     using (var stream = new MemoryStream(buffer.Skip(offset).Take(readed).ToArray()))
                         this._cache.Add(initialPosition, stream);
             }
@@ -561,7 +562,7 @@ namespace EzSmb.Streams
                     this._share = null;
                     this._position = 0;
                     this._length = 0;
-                    this._isUseFileCache = false;
+                    this._isUseCache = false;
                     this._cache = null;
                     this._locker = null;
                     this._errors = null;
