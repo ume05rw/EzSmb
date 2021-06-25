@@ -31,8 +31,8 @@ namespace EzSmb.Streams
         private IShare _share;
         private long _position;
         private long _length;
-        private bool _isUseFileCache;
-        private FileCache _cache;
+        private bool _isUseCache;
+        private Cache _cache;
         private Locker _locker;
 
         /// <summary>
@@ -78,32 +78,33 @@ namespace EzSmb.Streams
         }
 
         /// <summary>
-        /// Cache all responses of in a temp file.
+        /// Cache all responses of in a MemoryStream.
         /// </summary>
         /// <remarks>
         /// Default: false
         ///
-        /// Write all the data to a file once this stream get it.
-        /// The cache file will be deleted when it's disposed.
+        /// It caches the data once retrieved, and returns
+        /// the data from the cache when it is retrieved again.
+        /// The cache will be clear when it's disposed.
         /// </remarks>
-        public bool IsUseFileCache
+        public bool IsUseCache
         {
-            get => this._isUseFileCache;
+            get => this._isUseCache;
             set
             {
-                var changed = (this._isUseFileCache != value);
-                this._isUseFileCache = value;
+                var changed = (this._isUseCache != value);
+                this._isUseCache = value;
 
                 if (!changed)
                     return;
 
-                if (this._isUseFileCache)
+                if (this._isUseCache)
                 {
-                    this._cache = new FileCache();
+                    this._cache = new Cache();
                 }
                 else
                 {
-                    this.DisposeFileCache();
+                    this.DisposeCache();
                 }
             }
         }
@@ -156,7 +157,7 @@ namespace EzSmb.Streams
             this._elementPath = this._share.FormatPath(node.PathSet.ElementsPath);
             this._length = (long)node.Size;
             this._position = 0;
-            this._isUseFileCache = false;
+            this._isUseCache = false;
             this.ReadTimeout = 0;
         }
 
@@ -253,7 +254,7 @@ namespace EzSmb.Streams
 
             return this._locker.LockedInvoke<int>(() =>
             {
-                if (this.IsUseFileCache)
+                if (this.IsUseCache)
                 {
                     long initialPosition = this._position;
 
@@ -287,42 +288,7 @@ namespace EzSmb.Streams
                             && ((range.Position + range.Count) < this.Length)
                         )
                         {
-                            // So far, never been here.
-                            //// this.Length has not been reached, but the count ordered has not been reached.
-                            //var messages = new List<string>()
-                            //{
-                            //    string.Empty,
-                            //    $"*** File Reading Failed on EzSmb.Streams.ReaderStream.Read, with FileCache. ***",
-                            //    string.Empty,
-                            //    $"  Node:",
-                            //    $"    Name = {this._nodeName}",
-                            //    $"    FullPath = {this._fullPath}",
-                            //    $"    SharePath = {this._elementPath}",
-                            //    string.Empty,
-                            //    $"  Arguments:",
-                            //    $"    buffer.Length = {buffer.Length}",
-                            //    $"    offset = {offset}",
-                            //    $"    count = {count}",
-                            //    string.Empty,
-                            //    $"  Start Status: this.Position = {initialPosition}",
-                            //    $"  Error Status: this.Position = {this._position}",
-                            //    string.Empty,
-                            //    $"  CacheSet:",
-                            //    $"    Cache.Length = {cacheSet.Cache.Length}",
-                            //    $"    Ramainings.Count = {cacheSet.Ramainings.Count}",
-                            //    $"      Range: index = {index}",
-                            //    $"        Position = {range.Position}",
-                            //    $"        Count = {range.Count}",
-                            //    $"      readed = {readed}",
-                            //    string.Empty,
-                            //    string.Empty
-                            //};
-
-                            //var message = string.Join("\r\n", messages);
-                            //this.AddError("Read", message);
-                            //Console.WriteLine(messages);
-
-                            throw new IOException("*** File Reading Failed with ReaderStream.IsUseFileCache = true ***");
+                            throw new IOException("*** File Reading Failed with ReaderStream.IsUseCache = true ***");
                         }
 
                         cacheSet.Cache.Position = range.Position - initialPosition;
@@ -423,7 +389,7 @@ namespace EzSmb.Streams
                     this._position += data.Length;
                 }
 
-                if (exception == null && this.IsUseFileCache)
+                if (exception == null && this.IsUseCache)
                     using (var stream = new MemoryStream(buffer.Skip(offset).Take(readed).ToArray()))
                         this._cache.Add(initialPosition, stream);
             }
@@ -523,7 +489,7 @@ namespace EzSmb.Streams
 
         private bool disposedValue;
 
-        private void DisposeFileCache()
+        private void DisposeCache()
         {
             if (this._cache == null)
                 return;
@@ -549,7 +515,7 @@ namespace EzSmb.Streams
             {
                 if (disposing)
                 {
-                    this.DisposeFileCache();
+                    this.DisposeCache();
                     this._errors?.Clear();
                     this._share?.Dispose();
                     this._connection?.Dispose();
@@ -561,7 +527,7 @@ namespace EzSmb.Streams
                     this._share = null;
                     this._position = 0;
                     this._length = 0;
-                    this._isUseFileCache = false;
+                    this._isUseCache = false;
                     this._cache = null;
                     this._locker = null;
                     this._errors = null;

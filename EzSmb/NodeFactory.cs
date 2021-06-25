@@ -14,7 +14,6 @@ namespace EzSmb
     /// </summary>
     internal static class NodeFactory
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0016:スロー' 式を使用する", Justification = "<保留中>")]
         private static Node InnerGet(
             NodeType nodeType,
             PathSet pathSet,
@@ -67,7 +66,7 @@ namespace EzSmb
 
 
             result.PathSet = pathSet;
-            result.ParamSet = paramSet;
+            result.ParamSet = paramSet.Clone();
 
             return result;
         }

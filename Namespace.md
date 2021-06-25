@@ -73,7 +73,7 @@ EzSmb
               +-- long Length
               +-- int ReadTimeout
               +-- long Position
-              +-- bool IsUseFileCache
+              +-- bool IsUseCache
               +-- bool HasError
               +-- string[] Errors
               |

@@ -299,6 +299,12 @@
             Smb2 or Smb1
             </summary>
         </member>
+        <member name="M:EzSmb.Params.FixedParamSet.Clone">
+            <summary>
+            Create same value instance
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:EzSmb.Params.ParamSet">
             <summary>
             Connection Parameters
@@ -367,6 +373,12 @@
             <summary>
             FullPath
             </summary>
+        </member>
+        <member name="M:EzSmb.Paths.PathSet.Clone">
+            <summary>
+            Create same value instance
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:EzSmb.Scanners.Scanner.OnRecieved(System.IAsyncResult)">
             <summary>
@@ -451,20 +463,20 @@
             Clear error strings
             </summary>
         </member>
-        <member name="M:EzSmb.Streams.Caches.FileCache.GetRanges">
+        <member name="M:EzSmb.Streams.Caches.Cache.GetRanges">
             <summary>
             for test
             </summary>
             <returns></returns>
         </member>
-        <member name="M:EzSmb.Streams.Caches.FileCache.Add(System.Int64,System.IO.MemoryStream)">
+        <member name="M:EzSmb.Streams.Caches.Cache.Add(System.Int64,System.IO.MemoryStream)">
             <summary>
             Add Range
             </summary>
             <param name="offset"></param>
             <param name="memory"></param>
         </member>
-        <member name="M:EzSmb.Streams.Caches.FileCache.GetRamainings(System.Int64,System.Int64)">
+        <member name="M:EzSmb.Streams.Caches.Cache.GetRamainings(System.Int64,System.Int64)">
             <summary>
             Get Range-Array to be query.
             </summary>
@@ -515,15 +527,16 @@
             Current position.
             </summary>
         </member>
-        <member name="P:EzSmb.Streams.ReaderStream.IsUseFileCache">
+        <member name="P:EzSmb.Streams.ReaderStream.IsUseCache">
              <summary>
-             Cache all responses of in a temp file.
+             Cache all responses of in a MemoryStream.
              </summary>
              <remarks>
              Default: false
             
-             Write all the data to a file once this stream get it.
-             The cache file will be deleted when it's disposed.
+             It caches the data once retrieved, and returns
+             the data from the cache when it is retrieved again.
+             The cache will be clear when it's disposed.
              </remarks>
         </member>
         <member name="M:EzSmb.Streams.ReaderStream.#ctor(EzSmb.Node)">

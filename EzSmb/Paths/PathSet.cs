@@ -106,5 +106,24 @@ namespace EzSmb.Paths
         private PathSet()
         {
         }
+
+        /// <summary>
+        /// Create same value instance
+        /// </summary>
+        /// <returns></returns>
+        public PathSet Clone()
+        {
+            var elements = new string[this.Elements.Length];
+            Array.Copy(this.Elements, elements, this.Elements.Length);
+
+            return new PathSet()
+            {
+                IpAddressString = this.IpAddressString,
+                IpAddress = IPAddress.Parse(this.IpAddress.ToString()),
+                Share = this.Share,
+                ElementsPath = this.ElementsPath,
+                FullPath = this.FullPath
+            };
+        }
     }
 }

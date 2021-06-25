@@ -269,7 +269,7 @@ namespace EzSmbTest.Streams
             Assert.False(stream.CanWrite);
             Assert.True(stream.CanTimeout);
             Assert.Equal(0, stream.Position);
-            Assert.False(stream.IsUseFileCache);
+            Assert.False(stream.IsUseCache);
             Assert.Equal(readedStream.Length, stream.Length);
         }
 
@@ -304,16 +304,16 @@ namespace EzSmbTest.Streams
             using var stream = node.GetReaderStream();
             try
             {
-                stream.IsUseFileCache = false;
+                stream.IsUseCache = false;
                 stream.Flush();
 
-                stream.IsUseFileCache = true;
+                stream.IsUseCache = true;
                 stream.Flush();
 
-                stream.IsUseFileCache = false;
+                stream.IsUseCache = false;
                 await stream.FlushAsync();
 
-                stream.IsUseFileCache = true;
+                stream.IsUseCache = true;
                 await stream.FlushAsync();
             }
             catch (Exception ex)
@@ -508,7 +508,7 @@ namespace EzSmbTest.Streams
         {
             using var stream = node.GetReaderStream();
             using var readed = await node.Read();
-            stream.IsUseFileCache = false;
+            stream.IsUseCache = false;
             var fullBytes = readed.ToArray();
             var readedBytes1 = fullBytes.Take(5243080).ToArray();
             var readedBytes2 = fullBytes.Skip(3650).Take(1048576).ToArray();
@@ -565,7 +565,7 @@ namespace EzSmbTest.Streams
         {
             using var stream = node.GetReaderStream();
             using var readed = await node.Read();
-            stream.IsUseFileCache = true;
+            stream.IsUseCache = true;
             var fullBytes = readed.ToArray();
             var readedBytes1 = fullBytes.Take(5243080).ToArray();
             var readedBytes2 = fullBytes.Skip(3650).Take(1048576).ToArray();
@@ -623,7 +623,7 @@ namespace EzSmbTest.Streams
         {
             using var stream = node.GetReaderStream();
             using var readed = await node.Read();
-            stream.IsUseFileCache = true;
+            stream.IsUseCache = true;
             var fullBytes = readed.ToArray();
 
 
@@ -684,7 +684,7 @@ namespace EzSmbTest.Streams
         {
             using var stream = node.GetReaderStream();
             using var readed = await node.Read();
-            stream.IsUseFileCache = false;
+            stream.IsUseCache = false;
             var fullBytes = readed.ToArray();
             var readedByte = fullBytes.Skip(1200).Take(1).First();
 
@@ -724,7 +724,7 @@ namespace EzSmbTest.Streams
         {
             using var stream = node.GetReaderStream();
             using var readed = await node.Read();
-            stream.IsUseFileCache = false;
+            stream.IsUseCache = false;
             var fullBytes = readed.ToArray();
             var readedBytes = fullBytes.Skip(1200).Take(30).ToArray();
             var buffer = new byte[30];
@@ -769,7 +769,7 @@ namespace EzSmbTest.Streams
             var readedBytes = fullBytes.Skip(1200).Take(30).ToArray();
             var buffer = new byte[30];
 
-            stream.IsUseFileCache = false;
+            stream.IsUseCache = false;
             stream.Position = 1200;
             var completion = new TaskCompletionSource();
             void callback(IAsyncResult ar)
@@ -826,7 +826,7 @@ namespace EzSmbTest.Streams
         {
             using var stream = node.GetReaderStream();
             using var readed = await node.Read();
-            stream.IsUseFileCache = true;
+            stream.IsUseCache = true;
             var fullBytes = readed.ToArray();
 
             stream.ReadTimeout = 0;

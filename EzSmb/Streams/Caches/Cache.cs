@@ -5,14 +5,13 @@ using System.Linq;
 
 namespace EzSmb.Streams.Caches
 {
-    internal class FileCache : IDisposable
+    internal class Cache : IDisposable
     {
         private List<Range> _ranges;
-        private string _cachePath;
-        private FileStream _cacheStream;
+        private MemoryStream _cacheStream;
         private bool disposedValue;
 
-        public FileCache()
+        public Cache()
         {
             this._ranges = new List<Range>();
 
@@ -44,21 +43,8 @@ namespace EzSmb.Streams.Caches
                 catch (Exception)
                 {
                 }
-                try
-                {
-                    File.Delete(this._cachePath);
-                }
-                catch (Exception)
-                {
-                }
             }
-
-            this._cachePath = Path.GetTempFileName();
-            this._cacheStream = new FileStream(
-                this._cachePath,
-                FileMode.Create,
-                FileAccess.ReadWrite
-            );
+            this._cacheStream = new MemoryStream();
 
             this._ranges.Clear();
         }
@@ -71,7 +57,7 @@ namespace EzSmb.Streams.Caches
         public void Add(long offset, MemoryStream memory)
         {
             if (this.disposedValue)
-                throw new ObjectDisposedException("EzSmb.Streams.Caches.FileCache");
+                throw new ObjectDisposedException("EzSmb.Streams.Caches.Cache");
             if (memory == null)
                 throw new ArgumentException("Required memory");
 
@@ -93,7 +79,7 @@ namespace EzSmb.Streams.Caches
         private void Merge()
         {
             if (this.disposedValue)
-                throw new ObjectDisposedException("EzSmb.Streams.Caches.FileCache");
+                throw new ObjectDisposedException("EzSmb.Streams.Caches.Cache");
 
             if (this._ranges.Count <= 1)
                 return;
@@ -141,7 +127,7 @@ namespace EzSmb.Streams.Caches
         public Range[] GetRamainings(long offset, long count)
         {
             if (this.disposedValue)
-                throw new ObjectDisposedException("EzSmb.Streams.Caches.FileCache");
+                throw new ObjectDisposedException("EzSmb.Streams.Caches.Cache");
 
             var end = offset + count - 1;
             var argRange = new Range(offset, end);
@@ -206,7 +192,7 @@ namespace EzSmb.Streams.Caches
         )
         {
             if (this.disposedValue)
-                throw new ObjectDisposedException("EzSmb.Streams.Caches.FileCache");
+                throw new ObjectDisposedException("EzSmb.Streams.Caches.Cache");
 
             var result = new CacheSet();
             result.SetRamainings(this.GetRamainings(offset, count));
@@ -266,13 +252,6 @@ namespace EzSmb.Streams.Caches
                     try
                     {
                         this._cacheStream.Dispose();
-                    }
-                    catch (Exception)
-                    {
-                    }
-                    try
-                    {
-                        File.Delete(this._cachePath);
                     }
                     catch (Exception)
                     {
