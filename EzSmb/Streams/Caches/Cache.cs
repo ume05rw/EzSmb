@@ -57,7 +57,7 @@ namespace EzSmb.Streams.Caches
         public void Add(long offset, MemoryStream memory)
         {
             if (this.disposedValue)
-                throw new ObjectDisposedException("EzSmb.Streams.Caches.FileCache");
+                throw new ObjectDisposedException("EzSmb.Streams.Caches.Cache");
             if (memory == null)
                 throw new ArgumentException("Required memory");
 
@@ -79,7 +79,7 @@ namespace EzSmb.Streams.Caches
         private void Merge()
         {
             if (this.disposedValue)
-                throw new ObjectDisposedException("EzSmb.Streams.Caches.FileCache");
+                throw new ObjectDisposedException("EzSmb.Streams.Caches.Cache");
 
             if (this._ranges.Count <= 1)
                 return;
@@ -127,7 +127,7 @@ namespace EzSmb.Streams.Caches
         public Range[] GetRamainings(long offset, long count)
         {
             if (this.disposedValue)
-                throw new ObjectDisposedException("EzSmb.Streams.Caches.FileCache");
+                throw new ObjectDisposedException("EzSmb.Streams.Caches.Cache");
 
             var end = offset + count - 1;
             var argRange = new Range(offset, end);
@@ -192,7 +192,7 @@ namespace EzSmb.Streams.Caches
         )
         {
             if (this.disposedValue)
-                throw new ObjectDisposedException("EzSmb.Streams.Caches.FileCache");
+                throw new ObjectDisposedException("EzSmb.Streams.Caches.Cache");
 
             var result = new CacheSet();
             result.SetRamainings(this.GetRamainings(offset, count));

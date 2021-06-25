@@ -104,7 +104,7 @@ namespace EzSmb.Streams
                 }
                 else
                 {
-                    this.DisposeFileCache();
+                    this.DisposeCache();
                 }
             }
         }
@@ -288,42 +288,7 @@ namespace EzSmb.Streams
                             && ((range.Position + range.Count) < this.Length)
                         )
                         {
-                            // So far, never been here.
-                            //// this.Length has not been reached, but the count ordered has not been reached.
-                            //var messages = new List<string>()
-                            //{
-                            //    string.Empty,
-                            //    $"*** File Reading Failed on EzSmb.Streams.ReaderStream.Read, with FileCache. ***",
-                            //    string.Empty,
-                            //    $"  Node:",
-                            //    $"    Name = {this._nodeName}",
-                            //    $"    FullPath = {this._fullPath}",
-                            //    $"    SharePath = {this._elementPath}",
-                            //    string.Empty,
-                            //    $"  Arguments:",
-                            //    $"    buffer.Length = {buffer.Length}",
-                            //    $"    offset = {offset}",
-                            //    $"    count = {count}",
-                            //    string.Empty,
-                            //    $"  Start Status: this.Position = {initialPosition}",
-                            //    $"  Error Status: this.Position = {this._position}",
-                            //    string.Empty,
-                            //    $"  CacheSet:",
-                            //    $"    Cache.Length = {cacheSet.Cache.Length}",
-                            //    $"    Ramainings.Count = {cacheSet.Ramainings.Count}",
-                            //    $"      Range: index = {index}",
-                            //    $"        Position = {range.Position}",
-                            //    $"        Count = {range.Count}",
-                            //    $"      readed = {readed}",
-                            //    string.Empty,
-                            //    string.Empty
-                            //};
-
-                            //var message = string.Join("\r\n", messages);
-                            //this.AddError("Read", message);
-                            //Console.WriteLine(messages);
-
-                            throw new IOException("*** File Reading Failed with ReaderStream.IsUseFileCache = true ***");
+                            throw new IOException("*** File Reading Failed with ReaderStream.IsUseCache = true ***");
                         }
 
                         cacheSet.Cache.Position = range.Position - initialPosition;
@@ -524,7 +489,7 @@ namespace EzSmb.Streams
 
         private bool disposedValue;
 
-        private void DisposeFileCache()
+        private void DisposeCache()
         {
             if (this._cache == null)
                 return;
@@ -550,7 +515,7 @@ namespace EzSmb.Streams
             {
                 if (disposing)
                 {
-                    this.DisposeFileCache();
+                    this.DisposeCache();
                     this._errors?.Clear();
                     this._share?.Dispose();
                     this._connection?.Dispose();
