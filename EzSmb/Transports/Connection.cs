@@ -35,7 +35,7 @@ namespace EzSmb.Transports
                 return;
             }
 
-            this._pathSet = pathSet;
+            this._pathSet = pathSet.Clone();
             var argParamSet = (paramSet == null)
                 ? new ParamSet()
                 : paramSet.Clone();
@@ -103,7 +103,7 @@ namespace EzSmb.Transports
                 return;
             }
 
-            this._pathSet = pathSet;
+            this._pathSet = pathSet.Clone();
 
             if (paramSet.SmbType == SmbType.Smb2)
             {
@@ -134,7 +134,7 @@ namespace EzSmb.Transports
                 return;
             }
 
-            this._paramSet = paramSet;
+            this._paramSet = paramSet.Clone();
 
             this.IsConnected = true;
         }
@@ -157,7 +157,7 @@ namespace EzSmb.Transports
                 return;
             }
 
-            this._pathSet = node.PathSet;
+            this._pathSet = node.PathSet.Clone();
 
             if (node.ParamSet.SmbType == SmbType.Smb2)
             {
@@ -188,7 +188,7 @@ namespace EzSmb.Transports
                 return;
             }
 
-            this._paramSet = node.ParamSet;
+            this._paramSet = node.ParamSet.Clone();
 
             this.IsConnected = true;
         }
@@ -242,7 +242,6 @@ namespace EzSmb.Transports
             }
 
             // Requested Share, or Sub Node on Share
-
             using (var share = ShareFactory.Get(this._client, this._pathSet.Share))
             {
                 if (!share.IsConnected)
