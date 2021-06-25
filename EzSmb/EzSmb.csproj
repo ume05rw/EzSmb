@@ -29,14 +29,14 @@ Supports .Net Standard 2.0.</Description>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SMBLibrary" Version="1.4.6.1" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="..\License.txt">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SMBLibrary.ForXamarin" Version="1.4.6.1" />
   </ItemGroup>
 
 </Project>
