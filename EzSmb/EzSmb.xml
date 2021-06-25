@@ -374,6 +374,12 @@
             FullPath
             </summary>
         </member>
+        <member name="M:EzSmb.Paths.PathSet.Clone">
+            <summary>
+            Create same value instance
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:EzSmb.Scanners.Scanner.OnRecieved(System.IAsyncResult)">
             <summary>
             Event handling at data reception.
