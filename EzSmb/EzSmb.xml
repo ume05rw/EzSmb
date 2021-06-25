@@ -299,6 +299,12 @@
             Smb2 or Smb1
             </summary>
         </member>
+        <member name="M:EzSmb.Params.FixedParamSet.Clone">
+            <summary>
+            Create same value instance
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:EzSmb.Params.ParamSet">
             <summary>
             Connection Parameters

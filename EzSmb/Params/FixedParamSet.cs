@@ -48,5 +48,19 @@ namespace EzSmb.Params
         private FixedParamSet()
         {
         }
+
+        /// <summary>
+        /// Create same value instance
+        /// </summary>
+        /// <returns></returns>
+        public FixedParamSet Clone()
+        {
+            return new FixedParamSet()
+            {
+                UserName = this.UserName,
+                Password = this.Password,
+                DomainName = this.DomainName
+            };
+        }
     }
 }

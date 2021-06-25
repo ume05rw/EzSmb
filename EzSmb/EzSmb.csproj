@@ -15,9 +15,9 @@ Fix method name Node.GetStream -&gt; Node.GetReaderStream.</PackageReleaseNotes>
     <Description>It's easy to use, and supports SMB ver2 for Windows 10.
 Xamarin &amp; .NET Core can access Windows Shared Folders and NAS without using mpr.dll or Netapi32.dll.
 Supports .Net Standard 2.0.</Description>
-    <AssemblyVersion>1.3.4.0</AssemblyVersion>
-    <FileVersion>1.3.4.0</FileVersion>
-    <Version>1.3.4</Version>
+    <AssemblyVersion>1.3.5.0</AssemblyVersion>
+    <FileVersion>1.3.5.0</FileVersion>
+    <Version>1.3.5</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

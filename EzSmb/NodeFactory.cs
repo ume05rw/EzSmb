@@ -67,7 +67,7 @@ namespace EzSmb
 
 
             result.PathSet = pathSet;
-            result.ParamSet = paramSet;
+            result.ParamSet = paramSet.Clone();
 
             return result;
         }
