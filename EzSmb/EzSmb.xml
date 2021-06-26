@@ -527,6 +527,21 @@
             Current position.
             </summary>
         </member>
+        <member name="P:EzSmb.Streams.ReaderStream.NodeName">
+            <summary>
+            Source Node Name
+            </summary>
+        </member>
+        <member name="P:EzSmb.Streams.ReaderStream.FullPath">
+            <summary>
+            Source Node Full-Path
+            </summary>
+        </member>
+        <member name="P:EzSmb.Streams.ReaderStream.ElementsPath">
+            <summary>
+            Source Node Elements-Path
+            </summary>
+        </member>
         <member name="P:EzSmb.Streams.ReaderStream.IsUseCache">
              <summary>
              Cache all responses of in a MemoryStream.
