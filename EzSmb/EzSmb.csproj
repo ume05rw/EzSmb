@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Title>EzSmb</Title>
+    <Summary>SMB(Windows shared folder) Clinet Library powered by TalAloni's SmbLibrary, Xamarin and .NET Core Ready.</Summary>
     <PackageProjectUrl>https://github.com/ume05rw/EzSmb</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ume05rw/EzSmb.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -10,14 +12,15 @@
     <PackageTags>smb cifs samba nas shared smbclient</PackageTags>
     <PackageReleaseNotes>Add filter argument to Node.GetList method. Thanks ma-rahimi!
 Fix method name Node.GetStream -&gt; Node.GetReaderStream.</PackageReleaseNotes>
+    <Owners>Do-Be's</Owners>
     <Authors>Do-Be's</Authors>
     <Company>Do-Be's</Company>
     <Description>It's easy to use, and supports SMB ver2 for Windows 10.
 Xamarin &amp; .NET Core can access Windows Shared Folders and NAS without using mpr.dll or Netapi32.dll.
 Supports .Net Standard 2.0.</Description>
-    <AssemblyVersion>1.3.6.0</AssemblyVersion>
-    <FileVersion>1.3.6.0</FileVersion>
-    <Version>1.3.6</Version>
+    <AssemblyVersion>1.3.7.0</AssemblyVersion>
+    <FileVersion>1.3.7.0</FileVersion>
+    <Version>1.3.7</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
