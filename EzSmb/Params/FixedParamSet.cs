@@ -57,9 +57,16 @@ namespace EzSmb.Params
         {
             return new FixedParamSet()
             {
-                UserName = this.UserName,
-                Password = this.Password,
-                DomainName = this.DomainName
+                UserName = (this.UserName == null)
+                    ? null
+                    : string.Copy(this.UserName),
+                Password = (this.Password == null)
+                    ? null
+                    : string.Copy(this.Password),
+                DomainName = (this.DomainName == null)
+                    ? null
+                    : string.Copy(this.DomainName),
+                SmbType = this.SmbType
             };
         }
     }

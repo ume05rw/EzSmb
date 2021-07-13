@@ -866,5 +866,48 @@ namespace EzSmbTest.Streams
 
             this.Dump($"Timeout Test Succeeded.: {(DateTime.Now - startTime).TotalMilliseconds} msec.");
         }
+
+        [Fact]
+        public async Task LeakTest()
+        {
+            foreach (var setting in this.Settings)
+            {
+                var set = this.GetParamSet(setting);
+                Node node;
+
+                set.SmbType = null;
+                node = await this.GetNode(setting, set);
+                if (setting.SupportedSmb1 || setting.SupportedSmb2)
+                    this.InnerLeakTest(node);
+
+                set.SmbType = SmbType.Smb1;
+                node = await this.GetNode(setting, set);
+                if (setting.SupportedSmb1)
+                    this.InnerLeakTest(node);
+
+                set.SmbType = SmbType.Smb2;
+                node = await this.GetNode(setting, set);
+                if (setting.SupportedSmb2)
+                    this.InnerLeakTest(node);
+            }
+        }
+
+        private void InnerLeakTest(Node node)
+        {
+            using var stream = node.GetReaderStream();
+
+            Assert.Equal(node.Name, stream.NodeName);
+            Assert.False(object.ReferenceEquals(node.Name, stream.NodeName));
+
+            Assert.Equal(node.FullPath, stream.FullPath);
+            Assert.False(object.ReferenceEquals(node.FullPath, stream.FullPath));
+
+            // ↓そもそも違う構造だった。
+            //Assert.Equal(node.PathSet.ElementsPath, stream.ElementsPath);
+            Assert.False(object.ReferenceEquals(node.Name, stream.NodeName));
+
+            Assert.Equal(node.Size, stream.Length);
+            Assert.False(object.ReferenceEquals(node.Size, stream.Length));
+        }
     }
 }

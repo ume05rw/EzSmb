@@ -113,16 +113,27 @@ namespace EzSmb.Paths
         /// <returns></returns>
         public PathSet Clone()
         {
-            var elements = new string[this.Elements.Length];
-            Array.Copy(this.Elements, elements, this.Elements.Length);
+            string[] elements = null;
+
+            if (this.Elements != null)
+            {
+                elements = new string[this.Elements.Length];
+                for (var i = 0; i < this.Elements.Length; i++)
+                    elements[i] = string.Copy(this.Elements[i]);
+            }
 
             return new PathSet()
             {
-                IpAddressString = this.IpAddressString,
+                IpAddressString = string.Copy(this.IpAddressString),
                 IpAddress = IPAddress.Parse(this.IpAddress.ToString()),
-                Share = this.Share,
-                ElementsPath = this.ElementsPath,
-                FullPath = this.FullPath
+                Share = (this.Share == null)
+                    ? null
+                    : string.Copy(this.Share),
+                Elements = elements,
+                ElementsPath = (this.ElementsPath == null)
+                    ? null
+                    : string.Copy(this.ElementsPath),
+                FullPath = string.Copy(this.FullPath)
             };
         }
     }

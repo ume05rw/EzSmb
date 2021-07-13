@@ -3,6 +3,7 @@ using EzSmb.Params;
 using EzSmb.Params.Enums;
 using EzSmbTest.Bases;
 using EzSmbTest.Models;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using Xunit;

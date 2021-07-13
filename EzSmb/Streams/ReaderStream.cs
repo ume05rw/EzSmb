@@ -22,11 +22,6 @@ namespace EzSmb.Streams
     /// </remarks>
     public class ReaderStream : Stream, IErrorManaged, IDisposable
     {
-#pragma warning disable IDE0052 // for error dump.
-        private string _nodeName;
-        private string _fullPath;
-#pragma warning restore IDE0052
-        private string _elementPath;
         private Connection _connection;
         private IShare _share;
         private long _position;
@@ -34,6 +29,7 @@ namespace EzSmb.Streams
         private bool _isUseCache;
         private Cache _cache;
         private Locker _locker;
+
 
         /// <summary>
         /// Readable stream or not.
@@ -76,6 +72,22 @@ namespace EzSmb.Streams
                 this.Seek(value, SeekOrigin.Begin);
             }
         }
+
+
+        /// <summary>
+        /// Source Node Name
+        /// </summary>
+        public string NodeName { get; private set; }
+
+        /// <summary>
+        /// Source Node Full-Path
+        /// </summary>
+        public string FullPath { get; private set; }
+
+        /// <summary>
+        /// Source Node Elements-Path
+        /// </summary>
+        public string ElementsPath { get; private set; }
 
         /// <summary>
         /// Cache all responses of in a MemoryStream.
@@ -126,8 +138,8 @@ namespace EzSmb.Streams
                 return;
             }
 
-            this._nodeName = node.Name;
-            this._fullPath = node.PathSet.FullPath;
+            this.NodeName = string.Copy(node.Name);
+            this.FullPath = string.Copy(node.PathSet.FullPath);
 
             if (node.Type != NodeType.File)
                 this.AddError("Constructor", $"InvalidOperation: NodeTyoe.{node.Type}");
@@ -154,7 +166,7 @@ namespace EzSmb.Streams
                 return;
             }
 
-            this._elementPath = this._share.FormatPath(node.PathSet.ElementsPath);
+            this.ElementsPath = this._share.FormatPath(node.PathSet.ElementsPath);
             this._length = (long)node.Size;
             this._position = 0;
             this._isUseCache = false;
@@ -332,7 +344,7 @@ namespace EzSmb.Streams
 
             int readed = 0;
             Exception exception = null;
-            using (var hdr = this._share.GetHandler(this._elementPath, HandleType.Read, NodeType.File))
+            using (var hdr = this._share.GetHandler(this.ElementsPath, HandleType.Read, NodeType.File))
             {
                 if (!hdr.Succeeded)
                     throw new IOException("File Reading Failed.");
@@ -520,9 +532,10 @@ namespace EzSmb.Streams
                     this._share?.Dispose();
                     this._connection?.Dispose();
 
-                    this._nodeName = null;
-                    this._fullPath = null;
-                    this._elementPath = null;
+                    this.NodeName = null;
+                    this.FullPath = null;
+                    this.ElementsPath = null;
+
                     this._connection = null;
                     this._share = null;
                     this._position = 0;
