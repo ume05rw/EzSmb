@@ -313,6 +313,8 @@ namespace EzSmb.Transports.Shares.Bases
                 stream.Write(data, 0, data.Length);
             }
 
+            stream.Position = 0;
+
             return stream;
         }
 

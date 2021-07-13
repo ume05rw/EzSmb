@@ -241,6 +241,7 @@ namespace EzSmbTest
                     var result = await node.Read();
                     Assert.False(node.HasError, string.Join(", ", node.Errors));
                     Assert.NotNull(result);
+                    Assert.Equal(0, result.Position);
                 }
 
                 set.SmbType = SmbType.Smb1;
@@ -250,6 +251,7 @@ namespace EzSmbTest
                     var result = await node.Read();
                     Assert.False(node.HasError, string.Join(", ", node.Errors));
                     Assert.NotNull(result);
+                    Assert.Equal(0, result.Position);
                 }
 
                 set.SmbType = SmbType.Smb2;
@@ -259,6 +261,7 @@ namespace EzSmbTest
                     var result = await node.Read();
                     Assert.False(node.HasError, string.Join(", ", node.Errors));
                     Assert.NotNull(result);
+                    Assert.Equal(0, result.Position);
                 }
             }
         }
