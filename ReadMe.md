@@ -13,7 +13,7 @@ Supports .Net Standard 2.0.
 
 ## Requirement
 
-[SMBLibrary](https://www.nuget.org/packages/SMBLibrary/) >= 1.4.6.1  
+[SMBLibrary.ForXamarin](https://www.nuget.org/packages/SMBLibrary.ForXamarin/) >= 1.4.6.1  
 [NETStandard.Library](https://www.nuget.org/packages/NETStandard.Library/) >= 2.0.3
 
 ## Usage  
@@ -73,7 +73,7 @@ Class Tree: [Namespace.md](https://github.com/ume05rw/EzSmb/blob/master/Namespac
 
 ## Breaking changes:
 
-The first argument of Node.GetList method has been changed since version 1.3.
+ver1.3.0: The first argument of Node.GetList method has been changed.
 
 ```csharp
 Node.GetList(string filter = "*", string relatedPath = null)
