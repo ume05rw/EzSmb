@@ -1,7 +1,7 @@
 EzSmb
 ====
 
-SMB(Windows shared folder) Clinet Library powered by [TalAloni's SmbLibrary](https://github.com/TalAloni/SMBLibrary), Xamarin & .NET Core Ready.  
+SMB(Windows shared folder) Client Library powered by [TalAloni's SmbLibrary](https://github.com/TalAloni/SMBLibrary), Xamarin & .NET Core Ready.  
 
 [![NuGet](https://img.shields.io/nuget/v/EzSmb.svg?label=NuGet)](https://www.nuget.org/packages/EzSmb/)
 
