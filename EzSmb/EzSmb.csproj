@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Title>EzSmb</Title>
-    <Summary>SMB(Windows shared folder) Clinet Library powered by TalAloni's SmbLibrary, Xamarin and .NET Core Ready.</Summary>
+    <Summary>SMB(Windows shared folder) Client Library powered by TalAloni's SmbLibrary, Xamarin and .NET Core Ready.</Summary>
     <PackageProjectUrl>https://github.com/ume05rw/EzSmb</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ume05rw/EzSmb.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
