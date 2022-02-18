@@ -22,6 +22,7 @@ namespace EzSmb.Transports.Shares.Handlers.Bases
         public object Handle { get; private set; }
         public FileStatus FileStatus { get; private set; }
         public bool Succeeded { get; private set; }
+        public NTStatus Status { get; private set; }
 
         public HandlerBase(
             SmbType smbType,
@@ -39,7 +40,7 @@ namespace EzSmb.Transports.Shares.Handlers.Bases
 
             this._store = store;
             var args = handleType.ToArgs(smbType, nodeType);
-            var status = this._store.CreateFile(
+            Status = this._store.CreateFile(
                 out var handle,
                 out var handleStatus,
                 path,
@@ -51,7 +52,7 @@ namespace EzSmb.Transports.Shares.Handlers.Bases
                 null
             );
 
-            if (status == NTStatus.STATUS_SUCCESS)
+            if (Status == NTStatus.STATUS_SUCCESS)
             {
                 this.Handle = handle;
                 this.FileStatus = handleStatus;
