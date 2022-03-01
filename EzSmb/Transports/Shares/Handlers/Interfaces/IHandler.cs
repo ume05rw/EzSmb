@@ -22,5 +22,10 @@ namespace EzSmb.Transports.Shares.Handlers.Interfaces
         /// Handle created flag
         /// </summary>
         bool Succeeded { get; }
+
+        /// <summary>
+        /// NTStatus of creating the Handle
+        /// </summary>
+        NTStatus Status { get; }
     }
 }

@@ -53,7 +53,7 @@ namespace EzSmb.Transports.Shares
             {
                 if (!hdr.Succeeded)
                 {
-                    this.AddError("GetList", $"Create Handle Failed: {node.PathSet.FullPath}");
+                    this.AddError("GetList", $"Create Handle Failed: {node.PathSet.FullPath}. NTStatus: {hdr.Status}");
 
                     return null;
                 }
@@ -111,7 +111,7 @@ namespace EzSmb.Transports.Shares
             {
                 if (!hdr.Succeeded)
                 {
-                    this.AddError("ExecMove", $"Create Handle Failed: {fromNode.PathSet.FullPath}");
+                    this.AddError("ExecMove", $"Create Handle Failed: {fromNode.PathSet.FullPath}. NTStatus: {hdr.Status}");
 
                     return null;
                 }

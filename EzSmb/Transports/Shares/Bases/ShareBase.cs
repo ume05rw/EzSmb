@@ -272,7 +272,7 @@ namespace EzSmb.Transports.Shares.Bases
             {
                 if (!hdr.Succeeded)
                 {
-                    this.AddError("Read", $"Create Handle Failed: {node.FullPath}");
+                    this.AddError("Read", $"Create Handle Failed: {node.FullPath}. NTStatus: {hdr.Status}");
 
                     return null;
                 }
@@ -348,7 +348,7 @@ namespace EzSmb.Transports.Shares.Bases
             {
                 if (!hdr.Succeeded)
                 {
-                    this.AddError("Write", $"Create Handle Failed: {node.FullPath}");
+                    this.AddError("Write", $"Create Handle Failed: {node.FullPath}. NTStatus: {hdr.Status}");
 
                     return false;
                 }
@@ -448,7 +448,7 @@ namespace EzSmb.Transports.Shares.Bases
             {
                 if (!hdr.Succeeded)
                 {
-                    this.AddError("CreateFolder", $"Create Handle Failed: {node.FullPath}");
+                    this.AddError("CreateFolder", $"Create Handle Failed: {node.FullPath}. NTStatus: {hdr.Status}");
 
                     return null;
                 }
@@ -492,7 +492,7 @@ namespace EzSmb.Transports.Shares.Bases
             {
                 if (!hdr.Succeeded)
                 {
-                    this.AddError("Delete", $"Create Handle Failed: {node.FullPath}");
+                    this.AddError("Delete", $"Create Handle Failed: {node.FullPath}. NTStatus: {hdr.Status}");
 
                     return false;
                 }
