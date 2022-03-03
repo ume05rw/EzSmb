@@ -90,6 +90,7 @@ Node.GetList(string filter = "*", string relatedPath = null)
 [upcu](https://github.com/upcu)  
 [synmra](https://github.com/synmra)  
 [icnocop](https://github.com/icnocop)  
+[DenisKrasakovSDV](https://github.com/DenisKrasakovSDV)
 
 
 \#What did I do wrong operation? synmra was not added to sidebar...

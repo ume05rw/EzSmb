@@ -40,6 +40,9 @@
     <None Update="settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="settings.json.template">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
