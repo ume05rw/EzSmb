@@ -220,7 +220,7 @@ namespace EzSmb.Transports.Shares.Bases
 
             if (status != NTStatus.STATUS_SUCCESS)
             {
-                this.AddError("CreateNode", $"Basic Infomation Query Failed: {pathSet.FullPath}");
+                this.AddError("CreateNode", $"Basic Infomation Query Failed: {pathSet.FullPath}, NTStatus: {status}");
 
                 return null;
             }
@@ -301,7 +301,7 @@ namespace EzSmb.Transports.Shares.Bases
                 )
                 {
                     stream.Dispose();
-                    this.AddError("ReadStream", $"File Reading Failed.");
+                    this.AddError("ReadStream", $"File Reading Failed. NTStatus: {status}");
 
                     return null;
                 }
@@ -391,7 +391,7 @@ namespace EzSmb.Transports.Shares.Bases
 
                 if (status != NTStatus.STATUS_SUCCESS)
                 {
-                    this.AddError("WriteStream", $"File Writing Failed.");
+                    this.AddError("WriteStream", $"File Writing Failed. NTStatus: {status}");
 
                     return false;
                 }
