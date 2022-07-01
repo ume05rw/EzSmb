@@ -285,7 +285,7 @@ namespace EzSmb.Transports
             var names = this._client.ListShares(out var status);
             if (status != NTStatus.STATUS_SUCCESS)
             {
-                this.AddError("GetList", $"Share List Query Failed: {this._pathSet.Share}");
+                this.AddError("GetList", $"Share List Query Failed: {this._pathSet.Share}, NTStatus: {status}");
 
                 return null;
             }

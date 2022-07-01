@@ -387,8 +387,8 @@ namespace EzSmb.Streams
                         && status != NTStatus.STATUS_END_OF_FILE
                     )
                     {
-                        exception = new IOException("File Reading Failed.");
-                        this.AddError("ReadStream", $"File Reading Failed.");
+                        exception = new IOException("File Reading Failed. NTStatus: {status}");
+                        this.AddError("ReadStream", $"File Reading Failed. NTStatus: {status}");
 
                         break;
                     }
